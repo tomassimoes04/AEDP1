@@ -1,17 +1,30 @@
 public class WorkClass implements  Work{
+    String workId;
+    String login;
+    int year;
+    String name;
+
+    public WorkClass(String workId, String login, int year, String name) {
+        this.workId = workId;
+        this.login = login;
+        this.year = year;
+        this.name = name;
+    }
+
+
     @Override
     public String getId() {
-        return null;
+        return workId;
     }
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 
     @Override
     public int getYear() {
-        return 0;
+        return year;
     }
 
     @Override

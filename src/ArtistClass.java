@@ -1,26 +1,40 @@
+import dataStructures.*;
 public class ArtistClass extends UserClass implements Artist{
+    String artisticname;
+    DoubleList<Work> works= new DoubleList<>();
+    int numofworks=0;
+    public ArtistClass(int age, String name, String login, String email,String artisticname) {
+        super(age, name, login, email);
+        this.artisticname=artisticname;
+    }
+
     @Override
     public String getArtisticName() {
-        return null;
+        return artisticname;
     }
 
     @Override
-    public String getLogin() {
-        return null;
+    public Iterator<Work> getWorks() {
+        return works.iterator();
+    }
+
+    public int getNumofworks() {
+        return numofworks;
     }
 
     @Override
-    public String getName() {
-        return null;
+    public void addWork(String workId, String login, int year, String name) {
+        works.add(numofworks,new WorkClass(workId, login, year, name));
     }
 
     @Override
-    public int getAge() {
-        return 0;
-    }
-
-    @Override
-    public String getEmail() {
-        return null;
+    public boolean hasWork(String workId) {
+        for (int i = 0; i < numofworks; i++) {
+            Work work1 = works.get(i);
+            if (work1.getId().equals(workId)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

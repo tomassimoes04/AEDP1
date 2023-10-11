@@ -1,4 +1,5 @@
 import dataStructures.*;
+import Exceptions.*;
 
 import java.util.Scanner;
 
@@ -18,13 +19,13 @@ public class Main {
     private static final String LISTBIDSWORK = "LISTBIDSWORK";
     private static final String QUIT = "QUIT";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NonExistingUser, AlredyExistingUser, NonExistingWork, WrongUserType, ExistingWork,InvalidAge {
 
         Main.commands();
 
     }
 
-    private static void commands() {
+    private static void commands() throws NonExistingUser,WrongUserType,ExistingWork,AlredyExistingUser,NonExistingWork,InvalidAge{
         App app = new AppClass();
         Scanner in = new Scanner(java.lang.System.in);
         String command;
@@ -57,45 +58,87 @@ public class Main {
         String name = in.nextLine();
         int age = in.nextInt();
         String email = in.nextLine();
-        app.addUser(login, name, age, email);
-        System.out.println("\nRegisto de utilizador executado.\n");
+        try {
+            app.addUser(login, name, age, email);
+        }
+        catch (AlredyExistingUser | InvalidAge exception){
+            System.out.println(exception.getMessage());
+            return;
+
+        }
+
+            System.out.println("\nRegisto de utilizador executado.\n");
+
     }
 
-    private static void commandAddArtist(App app, Scanner in) {
+    private static void commandAddArtist(App app, Scanner in) throws AlredyExistingUser {
         String login = in.next();
         String name = in.nextLine();
         String artisticName = in.nextLine();
         int age = in.nextInt();
         String email = in.nextLine();
-        app.addArtist(login, name, artisticName, age, email);
+        try {
+            app.addArtist(login, name, artisticName, age, email);
+        }
+        catch (AlredyExistingUser | InvalidAge exception){
+            System.out.println(exception.getMessage());
+            return;
+        }
         System.out.println("\nRegisto de artista executado.\n");
     }
 
-    private static void commandRemoveUser(App app, Scanner in) {
+    private static void commandRemoveUser(App app, Scanner in) throws NonExistingUser {
         String login = in.next();
         app.removeUser(login);
+        try{
+            app.removeUser(login);
+        }
+        catch (NonExistingUser exception){
+            System.out.println(exception.getMessage());
+            return;
+        }
         System.out.println("\nRemocao de utilizador executada.\n");
     }
 
-    private static void commandAddWork(App app, Scanner in) {
+    private static void commandAddWork(App app, Scanner in) throws NonExistingUser, WrongUserType, ExistingWork {
         String workId = in.next();
         String login = in.next();
         int year = in.nextInt();
         String name = in.nextLine();
-        app.addWork(workId, login, year, name);
+        try {
+            app.addWork(workId, login, year, name);
+        }
+        catch (NonExistingUser | WrongUserType | ExistingWork exception1){
+            System.out.println(exception1.getMessage());
+            return;
+        }
+
         System.out.println("\nRegisto de obra executado.\n");
     }
 
-    private static void commandInfoUser(App app, Scanner in) {
+    private static void commandInfoUser(App app, Scanner in) throws NonExistingUser{
         String login = in.nextLine();
         User user = app.getUser(login);
-        System.out.println("\n" + user.getLogin() + " " + user.getName() + " " + user.getAge() + " " + user.getEmail() + "\n");
+        if(user!=null) {
+            System.out.println("\n" + user.getLogin() + " " + user.getName() + " " + user.getAge() + " " + user.getEmail() + "\n");
+        }
+        else{
+            System.out.println("Utilizador inexistente.");
+        }
     }
 
     private static void commandInfoArtist(App app, Scanner in) {
         String login = in.nextLine();
-        Artist artist = app.getArtist(login);
-        System.out.println("\n" + artist.getLogin() + " " + artist.getName() + " " + artist.getArtisticName() + " " + artist.getAge() + " " + artist.getEmail() + "\n");
+        User ze = app.getUser(login);
+        if(ze==null) {
+            System.out.println("Utilizador inexistente.");
+        }
+        else if(!(ze instanceof Artist)){
+            System.out.println("Artista inexistente.");
+        }else {
+            Artist artist = (Artist) app.getUser(login);
+            System.out.println("\n" + artist.getLogin() + " " + artist.getName() + " " + artist.getArtisticName() + " " + artist.getAge() + " " + artist.getEmail() + "\n");
+        }
     }
 
     private static void commandInfoWork(App app, Scanner in) {

@@ -1,3 +1,4 @@
+import dataStructures.*;
 public interface User {
 
     String getLogin();
