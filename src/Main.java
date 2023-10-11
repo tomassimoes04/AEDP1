@@ -18,32 +18,35 @@ public class Main {
 
     public static void main(String[] args) {
 
-        private static void commands() {
-            App app = new AppClass();
-            Scanner in = new Scanner(java.lang.System.in);
-            String command;
-            do {
-                command = in.next().toUpperCase();
-                switch (command) {
-                    case QUIT -> java.lang.System.out.println("Obrigado. Ate a proxima.");
-                    case ADDUSER ->
-                    case ADDWORK ->
-                    case ADDARTIST ->
-                    case REMOVEUSER -> 
-                    case INFOUSER ->
-                    case INFOWORK ->
-                    case INFOARTIST ->
-                    case CREATEAUCTION ->
-                    case ADDWORKAUCTION ->
-                    case BID ->
-                    case CLOSEAUCTION ->
-                    case LISTAUCTIONWORKS ->
-                    case LISTWORKSBYVALUE ->
+        Main.commands();
 
-                    default -> java.lang.System.out.println("Unknown command. Type help to see available commands.");
-                }
-            } while (!command.equals(QUIT));
-            in.close();
-        }
+    }
+
+    private static void commands() {
+        App app = new AppClass();
+        Scanner in = new Scanner(java.lang.System.in);
+        String command;
+        do {
+            command = in.next().toUpperCase();
+            switch (command) {
+                case QUIT -> java.lang.System.out.println("Obrigado. Ate a proxima.");
+                case ADDUSER ->
+                case ADDWORK ->
+                case ADDARTIST ->
+                case REMOVEUSER ->
+                case INFOUSER ->
+                case INFOWORK ->
+                case INFOARTIST ->
+                case CREATEAUCTION ->
+                case ADDWORKAUCTION ->
+                case BID ->
+                case CLOSEAUCTION ->
+                case LISTAUCTIONWORKS ->
+                case LISTWORKSBYVALUE ->
+
+                default -> java.lang.System.out.println("Unknown command. Type help to see available commands.");
+            }
+        } while (!command.equals(QUIT));
+        in.close();
     }
 }
