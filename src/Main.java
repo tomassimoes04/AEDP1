@@ -1,20 +1,20 @@
 import java.util.Scanner;
 
 public class Main {
-    private static String ADDUSER ="addUser";
-    private static String ADDARTIST ="addArtist";
-    private static String REMOVEUSER ="removeUser";
-    private static String ADDWORK ="addWork";
-    private static String INFOUSER = "infoUser ";
-    private static String INFOARTIST ="infoArtist";
-    private static String INFOWORK ="infoWork";
-    private static String CREATEAUCTION ="createAuction";
-    private static String ADDWORKAUCTION ="addWorkAuction";
-    private static String BID = "bid";
-    private static String CLOSEAUCTION ="closeAuction";
-    private static String LISTAUCTIONWORKS="listAuctionWorks";
-    private static String   LISTWORKSBYVALUE ="listBidsWork";
-    private static String QUIT ="quit";
+    private static final String ADDUSER = "ADDUSER";
+    private static final String ADDARTIST = "ADDARTIST";
+    private static final String REMOVEUSER = "REMOVEUSER";
+    private static final String ADDWORK = "ADDWORK";
+    private static final String INFOUSER = "INFOUSER ";
+    private static final String INFOARTIST = "INFOARTIST";
+    private static final String INFOWORK = "INFOWORK";
+    private static final String CREATEAUCTION = "CREATEAUCTION";
+    private static final String ADDWORKAUCTION = "ADDWORKAUCTION";
+    private static final String BID = "BID";
+    private static final String CLOSEAUCTION = "CLOSEAUCTION";
+    private static final String LISTAUCTIONWORKS = "LISTAUCTIONWORKS";
+    private static final String LISTBIDSWORK = "LISTBIDSWORK";
+    private static final String QUIT = "QUIT";
 
     public static void main(String[] args) {
 
@@ -30,23 +30,76 @@ public class Main {
             command = in.next().toUpperCase();
             switch (command) {
                 case QUIT -> java.lang.System.out.println("Obrigado. Ate a proxima.");
-                case ADDUSER ->
-                case ADDWORK ->
-                case ADDARTIST ->
-                case REMOVEUSER ->
-                case INFOUSER ->
-                case INFOWORK ->
-                case INFOARTIST ->
-                case CREATEAUCTION ->
-                case ADDWORKAUCTION ->
-                case BID ->
-                case CLOSEAUCTION ->
-                case LISTAUCTIONWORKS ->
-                case LISTWORKSBYVALUE ->
+                case ADDUSER -> commandAddUser(app, in);
+                case ADDWORK -> commandAddWork(app, in);
+                case ADDARTIST -> commandAddArtist(app, in);
+                case REMOVEUSER -> commandRemoveUser(app, in);
+                case INFOUSER -> commandInfoUser(app, in);
+                case INFOWORK -> commandInfoWork(app, in);
+                case INFOARTIST -> commandInfoArtist(app, in);
+                case CREATEAUCTION -> commandCreateAuction(app, in);
+                case ADDWORKAUCTION -> commandAddWorkAuction(app, in);
+                case BID -> commandBid(app, in);
+                case CLOSEAUCTION -> commandCloseAuction(app, in);
+                case LISTAUCTIONWORKS -> commandListAuctionWork(app, in);
+                case LISTBIDSWORK -> commandListBidsWork(app, in);
 
                 default -> java.lang.System.out.println("Unknown command. Type help to see available commands.");
             }
         } while (!command.equals(QUIT));
         in.close();
     }
+
+    private static void commandAddUser(App app, Scanner in){
+
+    }
+
+    private static void commandAddArtist(App app, Scanner in){
+
+    }
+
+    private static void commandRemoveUser(App app, Scanner in){
+
+    }
+
+    private static void commandAddWork(App app, Scanner in){
+
+    }
+
+    private static void commandInfoUser(App app, Scanner in){
+
+    }
+
+    private static void commandInfoArtist(App app, Scanner in){
+
+    }
+
+    private static void commandInfoWork(App app, Scanner in){
+
+    }
+
+    private static void commandCreateAuction(App app, Scanner in){
+
+    }
+
+    private static void commandAddWorkAuction(App app, Scanner in){
+
+    }
+
+    private static void commandBid(App app, Scanner in){
+
+    }
+
+    private static void commandCloseAuction(App app, Scanner in){
+
+    }
+
+    private static void commandListAuctionWork(App app, Scanner in){
+
+    }
+
+    private static void commandListBidsWork(App app, Scanner in){
+
+    }
+
 }
