@@ -4,11 +4,25 @@ public class WorkClass implements  Work{
     int year;
     String name;
 
-    public WorkClass(String workId, String login, int year, String name) {
+    int lastBuyValue;
+
+    int highestBuyValue;
+
+    boolean wasSold;
+
+    User owner;
+
+    Artist creator;
+
+    public WorkClass(String workId, Artist creator, int year, String name) {
         this.workId = workId;
-        this.login = login;
+        this.creator = creator;
         this.year = year;
         this.name = name;
+        lastBuyValue = 0;
+        highestBuyValue = 0;
+        wasSold = false;
+        owner = null;
     }
 
 
@@ -29,36 +43,36 @@ public class WorkClass implements  Work{
 
     @Override
     public int getLastBuyValue() {
-        return 0;
+        return lastBuyValue;
     }
 
     @Override
     public String getBuyerLogin() {
-        return null;
+        return owner.getLogin();
     }
 
     @Override
     public String getBuyerName() {
-        return null;
+        return owner.getName();
     }
 
     @Override
     public boolean wasSold() {
-        return false;
+        return wasSold;
     }
 
     @Override
     public int highestBuyValue() {
-        return 0;
+        return highestBuyValue;
     }
 
     @Override
     public String getArtistLogin() {
-        return null;
+        return creator.getLogin();
     }
 
     @Override
     public String getArtistName() {
-        return null;
+        return creator.getArtisticName();
     }
 }

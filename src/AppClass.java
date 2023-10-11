@@ -2,41 +2,48 @@ import dataStructures.*;
 import Exceptions.*;
 
 public class AppClass implements App {
-    DoubleList<User>users=new DoubleList<>();
-    DoubleList<Work>works=new DoubleList<>();
-    int usercount=0;
-    int workscount=0;
+    DoubleList<User> users;
+    DoubleList<Work> works;
+    int usercount;
+    int workscount;
+
+    public AppClass(){
+        users = new DoubleList<User>();
+        works = new DoubleList<Work>();
+        usercount = 0;
+        workscount = 0;
+    }
 
     @Override
-    public void addUser(String login, String name, int age, String email)throws AlredyExistingUser,InvalidAge {
-        User ze =getUser(login);
-        if(ze!=null){
+    public void addUser(String login, String name, int age, String email) throws AlredyExistingUser, InvalidAge {
+        User ze = getUser(login);
+        if (ze != null) {
             throw new AlredyExistingUser("Utilizador existente.");
         }
-        if(age<18){
+        if (age < 18) {
             throw new InvalidAge("Idade inferior a 18 anos.");
         }
-        users.add(usercount, new UserClass(age,name,login,email));
+        users.add(usercount, new UserClass(age, name, login, email));
         usercount++;
     }
 
     @Override
-    public void addArtist(String login, String name, String artisticName, int age, String email) throws AlredyExistingUser,InvalidAge {
-        User ze =getUser(login);
-        if(ze!=null){
+    public void addArtist(String login, String name, String artisticName, int age, String email) throws AlredyExistingUser, InvalidAge {
+        User user = getUser(login);
+        if (user != null) {
             throw new AlredyExistingUser("Utilizador existente.");
         }
-        if(age<18){
+        if (age < 18) {
             throw new InvalidAge("Idade inferior a 18 anos.");
         }
-        users.add(usercount, new ArtistClass(age,name,login,email,artisticName));
+        users.add(usercount, new ArtistClass(age, name, login, email, artisticName));
         usercount++;
 
     }
 
     @Override
-    public void removeUser(String login) throws NonExistingUser{
-        if(getUser(login)==null){
+    public void removeUser(String login) throws NonExistingUser {
+        if (getUser(login) == null) {
             throw new NonExistingUser("Utilizador inexistente.");
         }
         users.remove(getUser(login));
@@ -44,19 +51,19 @@ public class AppClass implements App {
     }
 
     @Override
-    public void addWork(String workId, String login, int year, String name)throws NonExistingUser,WrongUserType,ExistingWork {
-        if(getUser(login)==null){
+    public void addWork(String workId, String login, int year, String name) throws NonExistingUser, WrongUserType, ExistingWork {
+        if (getUser(login) == null) {
             throw new NonExistingUser("Utilizador inexistente.");
         }
-        if(!(getUser(login) instanceof ArtistClass)){
+        if (!(getUser(login) instanceof ArtistClass)) {
             throw new WrongUserType("Artista inexistente.");
         }
-        Artist ze= (Artist) getUser(login);
-        if(!ze.hasWork(workId)){
+        Artist artist = (Artist) getUser(login);
+        if (!artist.hasWork(workId)) {
             throw new ExistingWork("Obra existente.");
         }
-        ze.addWork(workId, login, year, name);
-        works.add(workscount,new WorkClass(workId, login, year, name));
+        artist.addWork(workId, artist, year, name);
+        works.add(workscount, new WorkClass(workId, artist, year, name));
         workscount++;
 
 
@@ -72,8 +79,6 @@ public class AppClass implements App {
         }
         return null;
     }
-
-
 
 
     @Override

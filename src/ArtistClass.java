@@ -23,8 +23,8 @@ public class ArtistClass extends UserClass implements Artist{
     }
 
     @Override
-    public void addWork(String workId, String login, int year, String name) {
-        works.add(numofworks,new WorkClass(workId, login, year, name));
+    public void addWork(String workId, Artist artist, int year, String name) {
+        works.add(numofworks,new WorkClass(workId, artist, year, name));
     }
 
     @Override
