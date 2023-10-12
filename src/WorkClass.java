@@ -3,12 +3,14 @@ public class WorkClass implements  Work{
     String login;
     int year;
     String name;
+    int minimumvalue =-1;
 
     public WorkClass(String workId, String login, int year, String name) {
         this.workId = workId;
         this.login = login;
         this.year = year;
         this.name = name;
+
     }
 
 
@@ -61,4 +63,16 @@ public class WorkClass implements  Work{
     public String getArtistName() {
         return null;
     }
+
+    @Override
+    public void setMinimumValue(int value) {
+        minimumvalue=value;
+    }
+
+    @Override
+    public int getMinimumValue() {
+        return minimumvalue;
+    }
+
+
 }

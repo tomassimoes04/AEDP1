@@ -8,7 +8,7 @@ public class Main {
     private static final String ADDARTIST = "ADDARTIST";
     private static final String REMOVEUSER = "REMOVEUSER";
     private static final String ADDWORK = "ADDWORK";
-    private static final String INFOUSER = "INFOUSER ";
+    private static final String INFOUSER = "INFOUSER";
     private static final String INFOARTIST = "INFOARTIST";
     private static final String INFOWORK = "INFOWORK";
     private static final String CREATEAUCTION = "CREATEAUCTION";
@@ -19,13 +19,13 @@ public class Main {
     private static final String LISTBIDSWORK = "LISTBIDSWORK";
     private static final String QUIT = "QUIT";
 
-    public static void main(String[] args) throws NonExistingUser, AlredyExistingUser, NonExistingWork, WrongUserType, ExistingWork,InvalidAge {
+    public static void main(String[] args) throws NonExistingUser, AlredyExistingUser, NonExistingWork, WrongUserType, ExistingWork, InvalidAge, InsuficientBid, AlreadyExistingAuction, NonExistingAuction {
 
         Main.commands();
 
     }
 
-    private static void commands() throws NonExistingUser,WrongUserType,ExistingWork,AlredyExistingUser,NonExistingWork,InvalidAge{
+    private static void commands() throws NonExistingUser, WrongUserType, ExistingWork, AlredyExistingUser, NonExistingWork, InvalidAge, InsuficientBid, NonExistingAuction, AlreadyExistingAuction {
         App app = new AppClass();
         Scanner in = new Scanner(java.lang.System.in);
         String command;
@@ -55,9 +55,11 @@ public class Main {
 
     private static void commandAddUser(App app, Scanner in) {
         String login = in.next();
-        String name = in.nextLine();
+        String name = in.next();
+        in.nextLine();
         int age = in.nextInt();
-        String email = in.nextLine();
+        String email = in.next();
+        in.nextLine() ;
         try {
             app.addUser(login, name, age, email);
         }
@@ -73,10 +75,13 @@ public class Main {
 
     private static void commandAddArtist(App app, Scanner in) throws AlredyExistingUser {
         String login = in.next();
-        String name = in.nextLine();
-        String artisticName = in.nextLine();
+        String name = in.next();
+        in.nextLine();
+        String artisticName = in.next();
+        in.nextLine();
         int age = in.nextInt();
-        String email = in.nextLine();
+        String email = in.next();
+        in.nextLine();
         try {
             app.addArtist(login, name, artisticName, age, email);
         }
@@ -89,7 +94,7 @@ public class Main {
 
     private static void commandRemoveUser(App app, Scanner in) throws NonExistingUser {
         String login = in.next();
-        app.removeUser(login);
+        in.nextLine() ;
         try{
             app.removeUser(login);
         }
@@ -104,7 +109,8 @@ public class Main {
         String workId = in.next();
         String login = in.next();
         int year = in.nextInt();
-        String name = in.nextLine();
+        String name = in.next();
+        in.nextLine();
         try {
             app.addWork(workId, login, year, name);
         }
@@ -116,19 +122,24 @@ public class Main {
         System.out.println("\nRegisto de obra executado.\n");
     }
 
-    private static void commandInfoUser(App app, Scanner in) throws NonExistingUser{
-        String login = in.nextLine();
+    private static void commandInfoUser(App app, Scanner in){
+        String login = in.next();
+        in.nextLine();
         User user = app.getUser(login);
-        if(user!=null) {
-            System.out.println("\n" + user.getLogin() + " " + user.getName() + " " + user.getAge() + " " + user.getEmail() + "\n");
+        if (user!=null){
+            if (!(user instanceof Artist)) {
+                System.out.println("\n" + user.getLogin() + " " + user.getName() + " " + user.getAge() + " " + user.getEmail() + "\n");
+            } else {
+                System.out.println("Utilizador inexistente.");
+            }
         }
-        else{
+        else {
             System.out.println("Utilizador inexistente.");
         }
     }
 
     private static void commandInfoArtist(App app, Scanner in) {
-        String login = in.nextLine();
+        String login = in.next();
         User ze = app.getUser(login);
         if(ze==null) {
             System.out.println("Utilizador inexistente.");
@@ -147,13 +158,13 @@ public class Main {
         System.out.println("\n" + work.getId() + " " + work.getName() + " " + work.getYear() + " " + work.getLastBuyValue() + " " + work.getBuyerLogin() + " " + work.getBuyerName() + "\n");
     }
 
-    private static void commandCreateAuction(App app, Scanner in) {
+    private static void commandCreateAuction(App app, Scanner in) throws AlreadyExistingAuction {
         String auctionId = in.nextLine();
         app.createAuction(auctionId);
         System.out.println("\nRegisto de leilao executado.\n");
     }
 
-    private static void commandAddWorkAuction(App app, Scanner in) {
+    private static void commandAddWorkAuction(App app, Scanner in) throws NonExistingAuction, NonExistingWork {
         String auctionId = in.next();
         String workId = in.next();
         int minValue = in.nextInt();
@@ -161,7 +172,7 @@ public class Main {
         System.out.println("\nObra adicionada ao leilao.\n");
     }
 
-    private static void commandBid(App app, Scanner in) {
+    private static void commandBid(App app, Scanner in) throws NonExistingUser, InsuficientBid, NonExistingAuction, NonExistingWork {
         String auctionId = in.next();
         String workId = in.next();
         String login = in.next();

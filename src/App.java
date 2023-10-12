@@ -16,11 +16,11 @@ public interface App {
 
     Work getWork(String workId);
 
-    void createAuction(String auctionId);
+    void createAuction(String auctionId) throws AlreadyExistingAuction;
 
-    void addWorkAuction(String auctionId, String workId, int minValue);
+    void addWorkAuction(String auctionId, String workId, int minValue)throws NonExistingWork,NonExistingAuction;
 
-    void bid(String auctionId, String workId, String login, int value);
+    void bid(String auctionId, String workId, String login, int value)throws NonExistingWork,NonExistingAuction ,NonExistingUser,InsuficientBid;
 
     Iterator<Work> closeAuction(String auctionId);
 

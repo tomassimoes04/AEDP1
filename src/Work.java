@@ -19,4 +19,6 @@ public interface Work {
     String getArtistLogin();
 
     String getArtistName();
+    void setMinimumValue(int value);
+    int getMinimumValue();
 }
