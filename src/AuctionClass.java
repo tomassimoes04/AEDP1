@@ -16,13 +16,20 @@ public class AuctionClass implements  Auction{
 
     @Override
     public void doBid(User buyer, String workId, int value) {
-        bids.add(bidcounter,new BidClass(buyer, value, workId));
-
+        getWork(workId).addBid(buyer, value);
     }
 
     @Override
-    public Iterator<Bid> closeAuction() {
-        return winningbids.iterator();
+    public Iterator<Work> closeAuction() {
+        for (int i = 0; i< workcounter; i++){
+            Work work = works.get(i);
+            if (work.hasBid()){
+                work.sold();
+                work.setLastBuyValue();
+                work.eraseBids();
+            }
+        }
+        return works.iterator();
     }
 
     @Override
@@ -35,7 +42,7 @@ public class AuctionClass implements  Auction{
     public boolean hasWork(String workId) {
        return getWork(workId)!=null;
     }
-    private Work getWork(String workid){
+    public Work getWork(String workid){
         for(int i=0;i<workcounter;i++){
             if(works.get(i).getId().equals(workid )){
                 return works.get(i);
@@ -46,8 +53,26 @@ public class AuctionClass implements  Auction{
     }
 
     @Override
+    public boolean isEmpty() {
+        return works.isEmpty();
+    }
+
+    @Override
+    public Iterator<Work> listWorks() {
+        return works.iterator();
+    }
+
+    @Override
+    public Iterator<Bid> listBidsWork(String workId) {
+        Work work = getWork(workId);
+        return work.listBids();
+    }
+
+    @Override
     public String getId() {
         return auctionId;
     }
+
+
 
 }

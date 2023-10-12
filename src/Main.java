@@ -181,42 +181,57 @@ public class Main {
         System.out.println("\nProposta aceite.\n");
     }
 
-    private static void commandCloseAuction(App app, Scanner in) {
+    private static void commandCloseAuction(App app, Scanner in) throws NonExistingAuction{
         String auctionId = in.nextLine();
-        Iterator<Work> it = app.closeAuction(auctionId);
-        System.out.println("\nLeilao encerrado.");
-        while (it.hasNext()) {
-            Work work = it.next();
-            if (work.wasSold()) {
-                System.out.println(work.getId() + " " + work.getName() + " " + work.getBuyerLogin() + " " + work.getBuyerName() + " " + work.getLastBuyValue());
-            } else {
-                System.out.println(work.getId() + " " + work.getName() + " sem propostas de venda.");
+        try {
+            Iterator<Work> it = app.closeAuction(auctionId);
+            System.out.println("\nLeilao encerrado.");
+            while (it.hasNext()) {
+                Work work = it.next();
+                if (work.wasSold()) {
+                    System.out.println(work.getId() + " " + work.getName() + " " + work.getBuyerLogin() + " " + work.getBuyerName() + " " + work.getLastBuyValue());
+                } else {
+                    System.out.println(work.getId() + " " + work.getName() + " sem propostas de venda.");
+                }
             }
+            System.out.println();
         }
-        System.out.println();
+        catch (NonExistingAuction exception){
+            System.out.println(exception.getMessage());
+        }
     }
 
     private static void commandListAuctionWorks(App app, Scanner in) {
         String auctionId = in.nextLine();
-        Iterator<Work> it = app.listAuctionWorks(auctionId);
-        System.out.println();
-        while (it.hasNext()) {
-            Work work = it.next();
-            System.out.println(work.getId() + " " + work.getName() + " " + work.getYear() + " " + work.highestBuyValue() + " " + work.getArtistLogin() + " " + work.getArtistName());
+        try {
+            Iterator<Work> it = app.listAuctionWorks(auctionId);
+            System.out.println();
+            while (it.hasNext()) {
+                Work work = it.next();
+                System.out.println(work.getId() + " " + work.getName() + " " + work.getYear() + " " + work.highestBuyValue() + " " + work.getArtistLogin() + " " + work.getArtistName());
+            }
+            System.out.println();
         }
-        System.out.println();
+        catch (NonExistingAuction | NoWorks exception){
+            System.out.println(exception.getMessage());
+        }
     }
 
     private static void commandListBidsWork(App app, Scanner in) {
         String auctionId = in.next();
         String workId = in.nextLine();
-        Iterator<Bid> it = app.listBidsWork(auctionId, workId);
-        System.out.println();
-        while (it.hasNext()) {
-            Bid bid = it.next();
-            System.out.println(bid.getBuyerLogin() + " " + bid.getBuyerName() + " " + bid.getValue());
+        try {
+            Iterator<Bid> it = app.listBidsWork(auctionId, workId);
+            System.out.println();
+            while (it.hasNext()) {
+                Bid bid = it.next();
+                System.out.println(bid.getBuyerLogin() + " " + bid.getBuyerName() + " " + bid.getValue());
+            }
+            System.out.println();
         }
-        System.out.println();
+        catch (NonExistingAuction | NonExistingWork | NoBids exception){
+            System.out.println(exception.getMessage());
+        }
     }
 
 }
