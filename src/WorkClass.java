@@ -102,8 +102,8 @@ public class WorkClass implements Work {
     }
 
     @Override
-    public void addBid(User buyer, int value) {
-        bids.addLast(new BidClass(buyer, value));
+    public void addBid(Bid bid) {
+        bids.addLast(bid);
     }
 
     @Override
@@ -120,9 +120,15 @@ public class WorkClass implements Work {
     }
 
     @Override
-    public void eraseBids() {
-        while (!bids.isEmpty()){
-            bids.removeFirst();
+    public void eraseBids(String auctionId) {
+        int i = 0;
+        while (bids.get(i)!=null){
+            if (bids.get(i).getAuctionId().equals(auctionId)){
+                bids.remove(i);
+            }
+            else{
+                i++;
+            }
         }
     }
 
@@ -131,7 +137,7 @@ public class WorkClass implements Work {
         return bids.iterator();
     }
 
-    private int getHighestBid(){
+    private int getHighestBid(){ //mudar para ir buscar a bid do auction
         int highest = bids.get(0).getValue();
         for (int i=0; i<bids.size(); i++){
             if (bids.get(i).getValue()>highest){

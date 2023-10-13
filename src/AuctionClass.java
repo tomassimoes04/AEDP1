@@ -8,6 +8,7 @@ public class AuctionClass implements  Auction{
     DoubleList<Work>works =new DoubleList<>();
     int workcounter=0;
     int bidcounter=0;
+    DoubleList<User> bidders = new DoubleList<>();
 
 
     public AuctionClass(String auctionId) {
@@ -15,18 +16,27 @@ public class AuctionClass implements  Auction{
     }
 
     @Override
-    public void doBid(User buyer, String workId, int value) {
-        getWork(workId).addBid(buyer, value);
+    public void doBid(User buyer, Work work, int value) {
+        if (bidders.find(buyer)==-1){
+            bidders.addLast(buyer);
+        }
+        Bid bid = new BidClass(buyer, value, auctionId);
+        work.addBid(bid);
+        buyer.addBid(bid);
     }
 
     @Override
     public Iterator<Work> closeAuction() {
+        for (int i = 0; i<bidders.size(); i++){
+            User bidder = bidders.get(i);
+            bidder.eraseBids(auctionId);
+        }
         for (int i = 0; i< workcounter; i++){
             Work work = works.get(i);
             if (work.hasBid()){
                 work.sold();
-                work.setLastBuyValue();
-                work.eraseBids();
+                work.setLastBuyValue(); //mexer com o auctionId
+                work.eraseBids(auctionId);
             }
         }
         return works.iterator();

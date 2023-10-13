@@ -12,12 +12,12 @@ public class AppClass implements App {
 
     @Override
     public void addUser(String login, String name, int age, String email) throws AlredyExistingUser, InvalidAge {
-        User ze = getUser(login);
-        if (ze != null) {
-            throw new AlredyExistingUser("\nUtilizador existente.\n");
-        }
         if (age < 18) {
             throw new InvalidAge("\nIdade inferior a 18 anos.\n");
+        }
+        User user = getUser(login);
+        if (user != null) {
+            throw new AlredyExistingUser("\nUtilizador existente.\n");
         }
         users.add(usercount, new UserClass(age, name, login, email));
         usercount++;
@@ -25,12 +25,12 @@ public class AppClass implements App {
 
     @Override
     public void addArtist(String login, String name, String artisticName, int age, String email) throws AlredyExistingUser, InvalidAge {
-        User ze = getUser(login);
-        if (ze != null) {
-            throw new AlredyExistingUser("\nUtilizador existente.\n");
-        }
         if (age < 18) {
             throw new InvalidAge("\nIdade inferior a 18 anos.\n");
+        }
+        User user = getUser(login);
+        if (user != null) {
+            throw new AlredyExistingUser("\nUtilizador existente.\n");
         }
         users.add(usercount, new ArtistClass(age, name, login, email, artisticName));
         usercount++;
@@ -42,6 +42,7 @@ public class AppClass implements App {
         if (getUser(login) == null) {
             throw new NonExistingUser("\nUtilizador inexistente.\n");
         }
+        //nos artistas verificar se os trabalhos estao em leilao
         users.remove(getUser(login));
         usercount--;
     }
@@ -151,7 +152,7 @@ public class AppClass implements App {
         if (work.getMinimumValue() > value) {
             throw new InsuficientBid("erro");
         }
-        auction.doBid(user, workId, value);
+        auction.doBid(user, work, value);
     }
 
     @Override

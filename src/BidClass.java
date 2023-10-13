@@ -1,11 +1,13 @@
 public class BidClass implements Bid{
 
-    private final User buyer;
-    private final int value;
+    private User buyer;
+    private int value;
+    private String auctionId;
 
-    public BidClass (User buyer, int value){
+    public BidClass (User buyer, int value, String auctionId){
         this.buyer=buyer;
         this.value=value;
+        this.auctionId=auctionId;
 
     }
     @Override
@@ -21,6 +23,11 @@ public class BidClass implements Bid{
     @Override
     public int getValue() {
         return value;
+    }
+
+    @Override
+    public String getAuctionId() {
+        return auctionId;
     }
 
 }

@@ -30,13 +30,13 @@ public interface Work {
 
     void sold();
 
-    void addBid(User buyer, int value);
+    void addBid(Bid bid);
 
     boolean hasBid();
 
     void setLastBuyValue();
 
-    void eraseBids();
+    void eraseBids(String auctionId);
 
     Iterator<Bid> listBids();
 }

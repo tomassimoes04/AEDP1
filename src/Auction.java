@@ -1,7 +1,7 @@
 import dataStructures.Iterator;
 
 public interface Auction {
-    void doBid(User buyer,String workId,int value);
+    void doBid(User buyer,Work work,int value);
     Iterator<Work> closeAuction();
     void addWork(Work work);
     boolean hasWork(String workId);
