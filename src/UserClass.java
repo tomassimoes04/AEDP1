@@ -8,6 +8,7 @@ public class UserClass implements User {
     private DoubleList<Bid> bids;
 
 
+
     public UserClass(int age, String name, String login, String email) {
         this.age = age;
         this.name = name;
@@ -39,6 +40,7 @@ public class UserClass implements User {
     @Override
     public void addBid(Bid bid) {
         bids.addLast(bid);
+        //System.out.println(bids.size());
     }
 
     @Override
@@ -49,13 +51,19 @@ public class UserClass implements User {
     @Override
     public void eraseBids(String auctionId) {
         int i = 0;
-        while (bids.get(i)!=null){
-            if (bids.get(i).getAuctionId().equals(auctionId)){
+        //System.out.println("pre ciclo -user");
+        //System.out.println(getName());
+        //System.out.println(bids.size());
+
+        while (i < bids.size()) {
+            if (bids.get(i).getAuctionId().equals(auctionId)) {
                 bids.remove(i);
-            }
-            else{
+            } else {
                 i++;
             }
+            //System.out.println(bids.size()+" dentro ciclo "+ i);
         }
     }
+
+
 }

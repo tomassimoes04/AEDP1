@@ -53,12 +53,19 @@ public class WorkClass implements Work {
 
     @Override
     public String getBuyerLogin() {
-        return lastBuyer.getLogin();
+        if(wasSold){
+            return lastBuyer.getLogin();
+        }
+        return "nao foi vendido";
+
     }
 
     @Override
     public String getBuyerName() {
-        return lastBuyer.getName();
+        if(wasSold){
+            return lastBuyer.getName();
+        }
+        return "nao foi vendido";
     }
 
     @Override
@@ -122,6 +129,9 @@ public class WorkClass implements Work {
     @Override
     public void eraseBids(String auctionId) {
         int i = 0;
+        //System.out.println("pre ciclo -work");
+        //System.out.println(getName());
+        //System.out.println(bids.size());
         while (bids.get(i)!=null){
             if (bids.get(i).getAuctionId().equals(auctionId)){
                 bids.remove(i);
@@ -129,12 +139,21 @@ public class WorkClass implements Work {
             else{
                 i++;
             }
+            //System.out.println(bids.size()+" dentro ciclo "+ i);
+            if (i==bids.size()){
+                return;
+            }
         }
     }
 
     @Override
     public Iterator<Bid> listBids() {
         return bids.iterator();
+    }
+
+    @Override
+    public void setLastBuyer(User winner,int value) {
+        lastBuyer=winner;
     }
 
     private int getHighestBid(){ //mudar para ir buscar a bid do auction

@@ -152,15 +152,23 @@ public class Main {
         }
     }
 
-    private static void commandInfoWork(App app, Scanner in) {
-        String workId = in.nextLine();
+    private static void commandInfoWork(App app, Scanner in) throws NonExistingWork {
+        String workId = in.next();
+        in.nextLine();
+        System.out.println("1"+workId+"1");
         Work work = app.getWork(workId);
         System.out.println("\n" + work.getId() + " " + work.getName() + " " + work.getYear() + " " + work.getLastBuyValue() + " " + work.getBuyerLogin() + " " + work.getBuyerName() + "\n");
     }
 
     private static void commandCreateAuction(App app, Scanner in) throws AlreadyExistingAuction {
-        String auctionId = in.nextLine();
-        app.createAuction(auctionId);
+        String auctionId = in.next();
+        in.nextLine();
+        try{
+            app.createAuction(auctionId);
+        }
+        catch (AlreadyExistingAuction exception){
+            System.out.println(exception.getMessage());
+        }
         System.out.println("\nRegisto de leilao executado.\n");
     }
 
@@ -168,7 +176,13 @@ public class Main {
         String auctionId = in.next();
         String workId = in.next();
         int minValue = in.nextInt();
-        app.addWorkAuction(auctionId, workId, minValue);
+        in.nextLine();
+        try{
+            app.addWorkAuction(auctionId, workId, minValue);
+        }
+        catch(NonExistingWork|NonExistingAuction exception){
+            System.out.println(exception.getMessage());
+        }
         System.out.println("\nObra adicionada ao leilao.\n");
     }
 
@@ -177,12 +191,20 @@ public class Main {
         String workId = in.next();
         String login = in.next();
         int value = in.nextInt();
-        app.bid(auctionId, workId, login, value);
-        System.out.println("\nProposta aceite.\n");
+        in.nextLine();
+        try {
+            app.bid(auctionId, workId, login, value);
+            System.out.println("\nProposta aceite.\n");
+        }
+        catch (NonExistingUser| InsuficientBid| NonExistingAuction|NonExistingWork exception){
+            System.out.println(exception.getMessage());
+        }
+
     }
 
     private static void commandCloseAuction(App app, Scanner in) throws NonExistingAuction{
-        String auctionId = in.nextLine();
+        String auctionId = in.next();
+        in.nextLine();
         try {
             Iterator<Work> it = app.closeAuction(auctionId);
             System.out.println("\nLeilao encerrado.");
@@ -202,7 +224,8 @@ public class Main {
     }
 
     private static void commandListAuctionWorks(App app, Scanner in) {
-        String auctionId = in.nextLine();
+        String auctionId = in.next();
+        in.nextLine();
         try {
             Iterator<Work> it = app.listAuctionWorks(auctionId);
             System.out.println();

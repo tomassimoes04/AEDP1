@@ -20,17 +20,44 @@ public class AuctionClass implements  Auction{
         if (bidders.find(buyer)==-1){
             bidders.addLast(buyer);
         }
-        Bid bid = new BidClass(buyer, value, auctionId);
+        Bid bid = new BidClass(buyer, value, auctionId,work);
         work.addBid(bid);
         buyer.addBid(bid);
+        bidcounter++;
+        bids.addLast(bid);
+        setWinners();
     }
+    private void setWinners() {
+        int topprice;
+        for (int i = 0; i < workcounter; i++) {
+            topprice = 0;
+            String work =works.get(i).getId();
+            for (int x = 0; x < bidcounter; x++) {
+
+                if (work.equals(bids.get(x).getWork().getId())) {
+                    if (bids.get(x).getValue() > topprice) {
+                        User buyer =bids.get(x).getUser();
+                        topprice = bids.get(x).getValue();
+                        works.get(i).setLastBuyer(buyer,topprice);
+
+                        //System.out.println(buyer.getAge()+" "+buyer.getLogin()+" "+buyer.getName()+" ");
+
+                    }
+                }
+            }
+        }
+    }
+
 
     @Override
     public Iterator<Work> closeAuction() {
+        //System.out.println("close1");
+
         for (int i = 0; i<bidders.size(); i++){
             User bidder = bidders.get(i);
             bidder.eraseBids(auctionId);
         }
+        //System.out.println("close2");
         for (int i = 0; i< workcounter; i++){
             Work work = works.get(i);
             if (work.hasBid()){
@@ -44,8 +71,9 @@ public class AuctionClass implements  Auction{
 
     @Override
     public void addWork(Work work) {
-        workcounter++;
+
         works.add(workcounter,work);
+        workcounter++;
     }
 
     @Override

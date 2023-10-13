@@ -140,17 +140,17 @@ public class AppClass implements App {
         Auction auction = getAuction(auctionId);
         User user = getUser(login);
         if (auction == null) {
-            throw new NonExistingAuction("erro");
+            throw new NonExistingAuction("Leilao inexistente.");
         }
         Work work = auction.getWork(workId);
         if (work == null) {
-            throw new NonExistingWork("erro");
+            throw new NonExistingWork("Obra inexistente no leilao.");
         }
         if (user == null) {
-            throw new NonExistingUser("erro");
+            throw new NonExistingUser("Utilizador inexistente.");
         }
         if (work.getMinimumValue() > value) {
-            throw new InsuficientBid("erro");
+            throw new InsuficientBid("Valor proposto abaixo do valor minimo.");
         }
         auction.doBid(user, work, value);
     }

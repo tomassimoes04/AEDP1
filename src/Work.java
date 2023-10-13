@@ -39,4 +39,5 @@ public interface Work {
     void eraseBids(String auctionId);
 
     Iterator<Bid> listBids();
+    void setLastBuyer(User winner,int value);
 }
