@@ -59,21 +59,18 @@ public class Main {
         in.nextLine();
         int age = in.nextInt();
         String email = in.next();
-        in.nextLine() ;
+        in.nextLine();
         try {
             app.addUser(login, name, age, email);
-        }
-        catch (AlredyExistingUser | InvalidAge exception){
+        } catch (AlredyExistingUser | InvalidAge exception) {
             System.out.println(exception.getMessage());
-            return;
-
         }
 
-            System.out.println("\nRegisto de utilizador executado.\n");
+        System.out.println("\nRegisto de utilizador executado.\n");
 
     }
 
-    private static void commandAddArtist(App app, Scanner in) throws AlredyExistingUser {
+    private static void commandAddArtist(App app, Scanner in) {
         String login = in.next();
         String name = in.next();
         in.nextLine();
@@ -84,28 +81,24 @@ public class Main {
         in.nextLine();
         try {
             app.addArtist(login, name, artisticName, age, email);
-        }
-        catch (AlredyExistingUser | InvalidAge exception){
+        } catch (AlredyExistingUser | InvalidAge exception) {
             System.out.println(exception.getMessage());
-            return;
         }
         System.out.println("\nRegisto de artista executado.\n");
     }
 
-    private static void commandRemoveUser(App app, Scanner in) throws NonExistingUser {
+    private static void commandRemoveUser(App app, Scanner in) {
         String login = in.next();
-        in.nextLine() ;
-        try{
+        in.nextLine();
+        try {
             app.removeUser(login);
-        }
-        catch (NonExistingUser exception){
+        } catch (NonExistingUser exception) {
             System.out.println(exception.getMessage());
-            return;
         }
         System.out.println("\nRemocao de utilizador executada.\n");
     }
 
-    private static void commandAddWork(App app, Scanner in) throws NonExistingUser, WrongUserType, ExistingWork {
+    private static void commandAddWork(App app, Scanner in) {
         String workId = in.next();
         String login = in.next();
         int year = in.nextInt();
@@ -113,40 +106,35 @@ public class Main {
         in.nextLine();
         try {
             app.addWork(workId, login, year, name);
+        } catch (NonExistingUser | WrongUserType | ExistingWork exception) {
+            System.out.println(exception.getMessage());
         }
-        catch (NonExistingUser | WrongUserType | ExistingWork exception1){
-            System.out.println(exception1.getMessage());
-            return;
-        }
-
         System.out.println("\nRegisto de obra executado.\n");
     }
 
-    private static void commandInfoUser(App app, Scanner in){
+    private static void commandInfoUser(App app, Scanner in) {
         String login = in.next();
         in.nextLine();
         User user = app.getUser(login);
-        if (user!=null){
+        if (user != null) {
             if (!(user instanceof Artist)) {
                 System.out.println("\n" + user.getLogin() + " " + user.getName() + " " + user.getAge() + " " + user.getEmail() + "\n");
             } else {
-                System.out.println("Utilizador inexistente.");
+                System.out.println("\nUtilizador inexistente.\n");
             }
-        }
-        else {
-            System.out.println("Utilizador inexistente.");
+        } else {
+            System.out.println("\nUtilizador inexistente.\n");
         }
     }
 
     private static void commandInfoArtist(App app, Scanner in) {
         String login = in.next();
-        User ze = app.getUser(login);
-        if(ze==null) {
-            System.out.println("Utilizador inexistente.");
-        }
-        else if(!(ze instanceof Artist)){
-            System.out.println("Artista inexistente.");
-        }else {
+        User user = app.getUser(login);
+        if (user == null) {
+            System.out.println("\nUtilizador inexistente.\n");
+        } else if (!(user instanceof Artist)) {
+            System.out.println("\nArtista inexistente.\n");
+        } else {
             Artist artist = (Artist) app.getUser(login);
             System.out.println("\n" + artist.getLogin() + " " + artist.getName() + " " + artist.getArtisticName() + " " + artist.getAge() + " " + artist.getEmail() + "\n");
         }
@@ -155,18 +143,20 @@ public class Main {
     private static void commandInfoWork(App app, Scanner in) throws NonExistingWork {
         String workId = in.next();
         in.nextLine();
-        System.out.println("1"+workId+"1");
         Work work = app.getWork(workId);
-        System.out.println("\n" + work.getId() + " " + work.getName() + " " + work.getYear() + " " + work.getLastBuyValue() + " " + work.getBuyerLogin() + " " + work.getBuyerName() + "\n");
+        if (work == null) {
+            System.out.println("\nObra inexistente.\n");
+        } else {
+            System.out.println("\n" + work.getId() + " " + work.getName() + " " + work.getYear() + " " + work.getLastBuyValue() + " " + work.getBuyerLogin() + " " + work.getBuyerName() + "\n");
+        }
     }
 
     private static void commandCreateAuction(App app, Scanner in) throws AlreadyExistingAuction {
         String auctionId = in.next();
         in.nextLine();
-        try{
+        try {
             app.createAuction(auctionId);
-        }
-        catch (AlreadyExistingAuction exception){
+        } catch (AlreadyExistingAuction exception) {
             System.out.println(exception.getMessage());
         }
         System.out.println("\nRegisto de leilao executado.\n");
@@ -177,10 +167,9 @@ public class Main {
         String workId = in.next();
         int minValue = in.nextInt();
         in.nextLine();
-        try{
+        try {
             app.addWorkAuction(auctionId, workId, minValue);
-        }
-        catch(NonExistingWork|NonExistingAuction exception){
+        } catch (NonExistingWork | NonExistingAuction exception) {
             System.out.println(exception.getMessage());
         }
         System.out.println("\nObra adicionada ao leilao.\n");
@@ -195,14 +184,13 @@ public class Main {
         try {
             app.bid(auctionId, workId, login, value);
             System.out.println("\nProposta aceite.\n");
-        }
-        catch (NonExistingUser| InsuficientBid| NonExistingAuction|NonExistingWork exception){
+        } catch (NonExistingUser | InsuficientBid | NonExistingAuction | NonExistingWork exception) {
             System.out.println(exception.getMessage());
         }
 
     }
 
-    private static void commandCloseAuction(App app, Scanner in) throws NonExistingAuction{
+    private static void commandCloseAuction(App app, Scanner in) throws NonExistingAuction {
         String auctionId = in.next();
         in.nextLine();
         try {
@@ -217,8 +205,7 @@ public class Main {
                 }
             }
             System.out.println();
-        }
-        catch (NonExistingAuction exception){
+        } catch (NonExistingAuction exception) {
             System.out.println(exception.getMessage());
         }
     }
@@ -234,15 +221,15 @@ public class Main {
                 System.out.println(work.getId() + " " + work.getName() + " " + work.getYear() + " " + work.highestBuyValue() + " " + work.getArtistLogin() + " " + work.getArtistName());
             }
             System.out.println();
-        }
-        catch (NonExistingAuction | NoWorks exception){
+        } catch (NonExistingAuction | NoWorks exception) {
             System.out.println(exception.getMessage());
         }
     }
 
     private static void commandListBidsWork(App app, Scanner in) {
         String auctionId = in.next();
-        String workId = in.nextLine();
+        String workId = in.next();
+        in.nextLine();
         try {
             Iterator<Bid> it = app.listBidsWork(auctionId, workId);
             System.out.println();
@@ -251,8 +238,7 @@ public class Main {
                 System.out.println(bid.getBuyerLogin() + " " + bid.getBuyerName() + " " + bid.getValue());
             }
             System.out.println();
-        }
-        catch (NonExistingAuction | NonExistingWork | NoBids exception){
+        } catch (NonExistingAuction | NonExistingWork | NoBids exception) {
             System.out.println(exception.getMessage());
         }
     }

@@ -55,34 +55,25 @@ public class AppClass implements App {
         if (!(getUser(login) instanceof ArtistClass)) {
             throw new WrongUserType("\nArtista inexistente.\n");
         }
-        Artist ze = (Artist) getUser(login);
+        Artist artist = (Artist) getUser(login);
 
-        if (ze.hasWork(workId)) {
+        if (artist.hasWork(workId)) {
             throw new ExistingWork("\nObra existente.\n");
         }
-        ze.addWork(workId, ze, year, name);
+        artist.addWork(workId, artist, year, name);
 
-        works.add(workscount, new WorkClass(workId, ze, year, name));
-        //System.out.println("cheguei");
-        //System.out.println(((ArtistClass) getUser(login)).getNumofworks()+"   "+((ArtistClass) getUser(login)).getFirstWork(workId));
-        //System.out.println(getWork(workId).getId());
+        works.add(workscount, new WorkClass(workId, artist, year, name));
         workscount++;
-
-
     }
 
     @Override
     public User getUser(String login) {
-        //System.out.println("cheguei");
         for (int i = 0; i < usercount; i++) {
             User user = users.get(i);
-            //System.out.println(user.getLogin());
             if (user.getLogin().equals(login)) {
-                //System.out.println("return user");
                 return user;
             }
         }
-        //System.out.println("d");
         return null;
     }
 
@@ -125,10 +116,10 @@ public class AppClass implements App {
         Auction auction = getAuction(auctionId);
         Work work = getWork(workId);
         if (auction == null) {
-            throw new NonExistingAuction("erro");
+            throw new NonExistingAuction("\nLeilao inexistente.\n");
         }
         if (work == null) {
-            throw new NonExistingWork("erro");
+            throw new NonExistingWork("\nObra inexistente.\n");
         }
         work.setMinimumValue(minValue);
         auction.addWork(work);
@@ -140,17 +131,17 @@ public class AppClass implements App {
         Auction auction = getAuction(auctionId);
         User user = getUser(login);
         if (auction == null) {
-            throw new NonExistingAuction("Leilao inexistente.");
+            throw new NonExistingAuction("\nLeilao inexistente.\n");
         }
         Work work = auction.getWork(workId);
         if (work == null) {
-            throw new NonExistingWork("Obra inexistente no leilao.");
+            throw new NonExistingWork("\nObra inexistente no leilao.\n");
         }
         if (user == null) {
-            throw new NonExistingUser("Utilizador inexistente.");
+            throw new NonExistingUser("\nUtilizador inexistente.\n");
         }
         if (work.getMinimumValue() > value) {
-            throw new InsuficientBid("Valor proposto abaixo do valor minimo.");
+            throw new InsuficientBid("\nValor proposto abaixo do valor minimo.\n");
         }
         auction.doBid(user, work, value);
     }
@@ -159,7 +150,7 @@ public class AppClass implements App {
     public Iterator<Work> closeAuction(String auctionId) throws NonExistingAuction {
         Auction auction = getAuction(auctionId);
         if (auction == null) {
-            throw new NonExistingAuction("erro");
+            throw new NonExistingAuction("\nLeilao inexistente.\n");
         }
         Iterator<Work> iterator = auction.closeAuction();
         auctions.remove(auction);
@@ -168,29 +159,29 @@ public class AppClass implements App {
     }
 
     @Override
-    public Iterator<Work> listAuctionWorks(String auctionId) throws NonExistingAuction, NoWorks{
+    public Iterator<Work> listAuctionWorks(String auctionId) throws NonExistingAuction, NoWorks {
         Auction auction = getAuction(auctionId);
         if (auction == null) {
-            throw new NonExistingAuction("erro");
+            throw new NonExistingAuction("\nLeilao inexistente.\n");
         }
         if (auction.isEmpty()) {
-            throw new NoWorks("erro");
+            throw new NoWorks("\nLeilao sem obras.\n");
         }
         return auction.listWorks();
     }
 
     @Override
-    public Iterator<Bid> listBidsWork(String auctionId, String workId) throws NonExistingAuction, NonExistingWork, NoBids{
+    public Iterator<Bid> listBidsWork(String auctionId, String workId) throws NonExistingAuction, NonExistingWork, NoBids {
         Auction auction = getAuction(auctionId);
         if (auction == null) {
-            throw new NonExistingAuction("erro");
+            throw new NonExistingAuction("\nLeilao inexistente.\n");
+        }
+        if (!auction.hasWork(workId)) {
+            throw new NonExistingWork("\nObra inexistente no leilao.\n");
         }
         Work work = auction.getWork(workId);
-        if (work == null) {
-            throw new NonExistingWork("erro");
-        }
-        if (!work.hasBid()){
-            throw new NoBids("erro");
+        if (!work.hasBid()) {
+            throw new NoBids("\nObra sem propostas.\n");
         }
         return auction.listBidsWork(workId);
     }

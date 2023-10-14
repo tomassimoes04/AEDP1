@@ -1,13 +1,13 @@
 import dataStructures.*;
 
-public class AuctionClass implements  Auction{
+public class AuctionClass implements Auction {
     //voltar gwfbinkwkidwdn
     String auctionId;
-    DoubleList<Bid> bids=new DoubleList<>();
-    DoubleList<Bid> winningbids=new DoubleList<>();
-    DoubleList<Work>works =new DoubleList<>();
-    int workcounter=0;
-    int bidcounter=0;
+    DoubleList<Bid> bids = new DoubleList<>();
+    DoubleList<Bid> winningbids = new DoubleList<>();
+    DoubleList<Work> works = new DoubleList<>();
+    int workcounter = 0;
+    int bidcounter = 0;
     DoubleList<User> bidders = new DoubleList<>();
 
 
@@ -17,28 +17,29 @@ public class AuctionClass implements  Auction{
 
     @Override
     public void doBid(User buyer, Work work, int value) {
-        if (bidders.find(buyer)==-1){
+        if (bidders.find(buyer) == -1) {
             bidders.addLast(buyer);
         }
-        Bid bid = new BidClass(buyer, value, auctionId,work);
+        Bid bid = new BidClass(buyer, value, auctionId, work);
         work.addBid(bid);
         buyer.addBid(bid);
         bidcounter++;
         bids.addLast(bid);
-        setWinners();
+        setWinners(); //quando se dá close talvez
     }
+
     private void setWinners() {
         int topprice;
         for (int i = 0; i < workcounter; i++) {
             topprice = 0;
-            String work =works.get(i).getId();
+            String work = works.get(i).getId();
             for (int x = 0; x < bidcounter; x++) {
 
                 if (work.equals(bids.get(x).getWork().getId())) {
                     if (bids.get(x).getValue() > topprice) {
-                        User buyer =bids.get(x).getUser();
+                        User buyer = bids.get(x).getUser();
                         topprice = bids.get(x).getValue();
-                        works.get(i).setLastBuyer(buyer,topprice);
+                        works.get(i).setLastBuyer(buyer, topprice);
 
                         //System.out.println(buyer.getAge()+" "+buyer.getLogin()+" "+buyer.getName()+" ");
 
@@ -53,14 +54,14 @@ public class AuctionClass implements  Auction{
     public Iterator<Work> closeAuction() {
         //System.out.println("close1");
 
-        for (int i = 0; i<bidders.size(); i++){
+        for (int i = 0; i < bidders.size(); i++) {
             User bidder = bidders.get(i);
             bidder.eraseBids(auctionId);
         }
         //System.out.println("close2");
-        for (int i = 0; i< workcounter; i++){
+        for (int i = 0; i < workcounter; i++) {
             Work work = works.get(i);
-            if (work.hasBid()){
+            if (work.hasBid()) {
                 work.sold();
                 work.setLastBuyValue(); //mexer com o auctionId
                 work.eraseBids(auctionId);
@@ -72,20 +73,21 @@ public class AuctionClass implements  Auction{
     @Override
     public void addWork(Work work) {
 
-        works.add(workcounter,work);
+        works.addLast(work);
         workcounter++;
     }
 
     @Override
     public boolean hasWork(String workId) {
-       return getWork(workId)!=null;
+        return getWork(workId) != null;
     }
-    public Work getWork(String workid){
-        for(int i=0;i<workcounter;i++){
-            if(works.get(i).getId().equals(workid )){
-                return works.get(i);
-            }
 
+    public Work getWork(String workId) {
+        for (int i = 0; i < workcounter; i++) {
+            Work work1 = works.get(i);
+            if (work1.getId().equals(workId)) {
+                return work1;
+            }
         }
         return null;
     }
@@ -110,7 +112,6 @@ public class AuctionClass implements  Auction{
     public String getId() {
         return auctionId;
     }
-
 
 
 }
