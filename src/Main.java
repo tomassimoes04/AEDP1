@@ -1,6 +1,8 @@
-import dataStructures.*;
 import Exceptions.*;
+import dataStructures.Iterator;
+import System.*;
 
+import java.io.*;
 import java.util.Scanner;
 
 public class Main {
@@ -20,19 +22,18 @@ public class Main {
     private static final String QUIT = "QUIT";
 
     public static void main(String[] args) throws NonExistingUser, AlredyExistingUser, NonExistingWork, WrongUserType, ExistingWork, InvalidAge, InsuficientBid, AlreadyExistingAuction, NonExistingAuction {
-
-        Main.commands();
+        App app = load();
+        Main.commands(app);
 
     }
 
-    private static void commands() throws NonExistingUser, WrongUserType, ExistingWork, AlredyExistingUser, NonExistingWork, InvalidAge, InsuficientBid, NonExistingAuction, AlreadyExistingAuction {
-        App app = new AppClass();
+    private static void commands(App app) throws NonExistingUser, WrongUserType, ExistingWork, AlredyExistingUser, NonExistingWork, InvalidAge, InsuficientBid, NonExistingAuction, AlreadyExistingAuction {
         Scanner in = new Scanner(java.lang.System.in);
         String command;
         do {
             command = in.next().toUpperCase();
             switch (command) {
-                case QUIT -> java.lang.System.out.println("Obrigado. Ate a proxima.");
+                case QUIT -> java.lang.System.out.println("\nObrigado. Ate a proxima.");
                 case ADDUSER -> commandAddUser(app, in);
                 case ADDWORK -> commandAddWork(app, in);
                 case ADDARTIST -> commandAddArtist(app, in);
@@ -50,41 +51,62 @@ public class Main {
                 default -> java.lang.System.out.println("Unknown command. Type help to see available commands.");
             }
         } while (!command.equals(QUIT));
+        save(app);
         in.close();
+    }
+
+    private static App load() {
+        try {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("sistema.txt"));
+            App app = (AppClass) ois.readObject();
+            ois.close();
+            return app;
+        } catch (IOException exception) {
+            return new AppClass();
+        } catch (ClassNotFoundException exception) {
+            System.out.println("erro na serialization");
+            return new AppClass();
+        }
+    }
+
+    private static void save(App app) {
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream((new FileOutputStream("sistema.txt")));
+            oos.writeObject(app);
+            oos.flush();
+            oos.close();
+        } catch (IOException exception) {
+            System.out.println("problema a escrever");
+        }
     }
 
     private static void commandAddUser(App app, Scanner in) {
         String login = in.next();
-        String name = in.next();
-        in.nextLine();
+        String name = in.nextLine().trim();
         int age = in.nextInt();
         String email = in.next();
         in.nextLine();
         try {
             app.addUser(login, name, age, email);
+            System.out.println("\nRegisto de utilizador executado.\n");
         } catch (AlredyExistingUser | InvalidAge exception) {
             System.out.println(exception.getMessage());
         }
-
-        System.out.println("\nRegisto de utilizador executado.\n");
-
     }
 
     private static void commandAddArtist(App app, Scanner in) {
         String login = in.next();
-        String name = in.next();
-        in.nextLine();
-        String artisticName = in.next();
-        in.nextLine();
+        String name = in.nextLine().trim();
+        String artisticName = in.nextLine();
         int age = in.nextInt();
         String email = in.next();
         in.nextLine();
         try {
             app.addArtist(login, name, artisticName, age, email);
+            System.out.println("\nRegisto de artista executado.\n");
         } catch (AlredyExistingUser | InvalidAge exception) {
             System.out.println(exception.getMessage());
         }
-        System.out.println("\nRegisto de artista executado.\n");
     }
 
     private static void commandRemoveUser(App app, Scanner in) {
@@ -92,10 +114,10 @@ public class Main {
         in.nextLine();
         try {
             app.removeUser(login);
+            System.out.println("\nRemocao de utilizador executada.\n");
         } catch (NonExistingUser exception) {
             System.out.println(exception.getMessage());
         }
-        System.out.println("\nRemocao de utilizador executada.\n");
     }
 
     private static void commandAddWork(App app, Scanner in) {
@@ -106,10 +128,10 @@ public class Main {
         in.nextLine();
         try {
             app.addWork(workId, login, year, name);
+            System.out.println("\nRegisto de obra executado.\n");
         } catch (NonExistingUser | WrongUserType | ExistingWork exception) {
             System.out.println(exception.getMessage());
         }
-        System.out.println("\nRegisto de obra executado.\n");
     }
 
     private static void commandInfoUser(App app, Scanner in) {
@@ -117,11 +139,7 @@ public class Main {
         in.nextLine();
         User user = app.getUser(login);
         if (user != null) {
-            if (!(user instanceof Artist)) {
-                System.out.println("\n" + user.getLogin() + " " + user.getName() + " " + user.getAge() + " " + user.getEmail() + "\n");
-            } else {
-                System.out.println("\nUtilizador inexistente.\n");
-            }
+            System.out.println("\n" + user.getLogin() + " " + user.getName() + " " + user.getAge() + " " + user.getEmail() + "\n");
         } else {
             System.out.println("\nUtilizador inexistente.\n");
         }
@@ -156,10 +174,10 @@ public class Main {
         in.nextLine();
         try {
             app.createAuction(auctionId);
+            System.out.println("\nRegisto de leilao executado.\n");
         } catch (AlreadyExistingAuction exception) {
             System.out.println(exception.getMessage());
         }
-        System.out.println("\nRegisto de leilao executado.\n");
     }
 
     private static void commandAddWorkAuction(App app, Scanner in) throws NonExistingAuction, NonExistingWork {
@@ -169,10 +187,10 @@ public class Main {
         in.nextLine();
         try {
             app.addWorkAuction(auctionId, workId, minValue);
+            System.out.println("\nObra adicionada ao leilao.\n");
         } catch (NonExistingWork | NonExistingAuction exception) {
             System.out.println(exception.getMessage());
         }
-        System.out.println("\nObra adicionada ao leilao.\n");
     }
 
     private static void commandBid(App app, Scanner in) throws NonExistingUser, InsuficientBid, NonExistingAuction, NonExistingWork {

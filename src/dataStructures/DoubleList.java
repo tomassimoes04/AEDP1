@@ -388,15 +388,15 @@ public class DoubleList<E> implements List<E>
      */
     protected void removeMiddleNode( DoubleListNode<E> node )
     {
-    	DoubleListNode<E> middleNode = head;
-        int position = 0;
-        while ( node != null && !node.equals(middleNode) )
+    	DoubleListNode<E> middleNode = head.getNext();
+        int position = 1;
+        while ( position<currentSize && !node.equals(middleNode) )
         {
             middleNode = middleNode.getNext();
             position++;
         }
-        DoubleListNode<E> prevNode = middleNode.getNext();
-        DoubleListNode<E> nextNode = middleNode.getPrevious();
+        DoubleListNode<E> prevNode = middleNode.getPrevious();
+        DoubleListNode<E> nextNode = middleNode.getNext();
         prevNode.setNext(nextNode);
         nextNode.setPrevious(prevNode);
         currentSize--;
