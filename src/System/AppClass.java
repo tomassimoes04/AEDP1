@@ -23,7 +23,6 @@ public class AppClass implements App {
             throw new AlredyExistingUser("\nUtilizador existente.\n");
         }
         users.addLast(new UserClass(age, name, login, email));
-        usercount++;
     }
 
     @Override
@@ -36,38 +35,68 @@ public class AppClass implements App {
             throw new AlredyExistingUser("\nUtilizador existente.\n");
         }
         users.addLast(new ArtistClass(age, name, login, email, artisticName));
-        usercount++;
-
     }
 
     @Override
-    public void removeUser(String login) throws NonExistingUser {
+    public void removeUser(String login) throws NonExistingUser, BidsInAuction, WorksInAuction{
         User user = getUser(login);
         if (user== null) {
             throw new NonExistingUser("\nUtilizador inexistente.\n");
         }
-        //nos artistas verificar se os trabalhos estao em leilao
+        if (user.hasBids()) {
+            throw new BidsInAuction("\nUtilizador com propostas submetidas.\n");
+        }
+        if (user instanceof Artist){
+            if (hasActiveWorks(login)) {
+                throw new WorksInAuction("\nArtista com obras em leilao.\n");
+            }
+            removeWorksArtist(login);
+        }
         users.remove(user);
-        usercount--;
+    }
+
+    private boolean hasActiveWorks(String login){
+        for (int i = 0; i<auctions.size(); i++){
+            Auction auction = auctions.get(i);
+            if (auction.hasWorksInAuction(login)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void removeWorksArtist(String login){
+        Queue<Work> worksToRemove = new QueueInList<>();
+        for (int i = 0; i<works.size(); i++){
+            Work work = works.get(i);
+            if (work.getArtistLogin().equals(login)){
+                worksToRemove.enqueue(work);
+            }
+        }
+        while (!worksToRemove.isEmpty()){
+            works.remove(worksToRemove.dequeue());
+        }
     }
 
     @Override
     public void addWork(String workId, String login, int year, String name) throws NonExistingUser, WrongUserType, ExistingWork {
-        if (getUser(login) == null) {
-            throw new NonExistingUser("\nUtilizador inexistente.\n");
-        }
-        if (!(getUser(login) instanceof ArtistClass)) {
-            throw new WrongUserType("\nArtista inexistente.\n");
-        }
-        Artist artist = (Artist) getUser(login);
-
-        if (artist.hasWork(workId)) {
+        if (getWork(workId)!=null) {
             throw new ExistingWork("\nObra existente.\n");
         }
-        artist.addWork(workId, artist, year, name);
 
-        works.add(workscount, new WorkClass(workId, artist, year, name));
-        workscount++;
+        User user = getUser(login);
+        if (user == null) {
+            throw new NonExistingUser("\nUtilizador inexistente.\n");
+        }
+        if (!(user instanceof ArtistClass)) {
+            throw new WrongUserType("\nArtista inexistente.\n");
+        }
+        Artist artist = (Artist) user;
+
+        Work work = new WorkClass(workId, artist, year, name);
+        artist.addWork(work);
+
+        works.addLast(work);
     }
 
     @Override
@@ -85,7 +114,7 @@ public class AppClass implements App {
     @Override
     public Work getWork(String workId) {
 
-        for (int i = 0; i < workscount; i++) {
+        for (int i = 0; i < works.size(); i++) {
             Work work1 = works.get(i);
             if (work1.getId().equals(workId)) {
                 return work1;
@@ -96,7 +125,7 @@ public class AppClass implements App {
 
     public Auction getAuction(String auctionId) {
 
-        for (int i = 0; i < auctioncount; i++) {
+        for (int i = 0; i < auctions.size(); i++) {
             Auction auction = auctions.get(i);
             if (auction.getId().equals(auctionId)) {
                 return auction;
@@ -111,8 +140,7 @@ public class AppClass implements App {
         if (auction != null) {
             throw new AlreadyExistingAuction("\nLeilao existente.\n");
         }
-        auctions.add(auctioncount, new AuctionClass(auctionId));
-        auctioncount++;
+        auctions.addLast(new AuctionClass(auctionId));
     }
 
     @Override

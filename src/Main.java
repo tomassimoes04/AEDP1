@@ -115,7 +115,7 @@ public class Main {
         try {
             app.removeUser(login);
             System.out.println("\nRemocao de utilizador executada.\n");
-        } catch (NonExistingUser exception) {
+        } catch (NonExistingUser | BidsInAuction | WorksInAuction exception) {
             System.out.println(exception.getMessage());
         }
     }
@@ -124,8 +124,7 @@ public class Main {
         String workId = in.next();
         String login = in.next();
         int year = in.nextInt();
-        String name = in.next();
-        in.nextLine();
+        String name = in.nextLine().trim();
         try {
             app.addWork(workId, login, year, name);
             System.out.println("\nRegisto de obra executado.\n");
@@ -165,7 +164,7 @@ public class Main {
         if (work == null) {
             System.out.println("\nObra inexistente.\n");
         } else {
-            System.out.println("\n" + work.getId() + " " + work.getName() + " " + work.getYear() + " " + work.getLastBuyValue() + " " + work.getBuyerLogin() + " " + work.getBuyerName() + "\n");
+            System.out.println("\n" + work.getId() + " " + work.getName() + " " + work.getYear() + " " + work.getLastBuyValue() + " " + work.getArtistLogin() + " " + work.getArtistName() + "\n");
         }
     }
 

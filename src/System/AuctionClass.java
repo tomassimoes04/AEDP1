@@ -112,6 +112,17 @@ public class AuctionClass implements Auction {
     }
 
     @Override
+    public boolean hasWorksInAuction(String login) {
+        for (int i = 0; i<works.size(); i++){
+            Work work = works.get(i);
+            if (work.getArtistLogin().equals(login)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public String getId() {
         return auctionId;
     }

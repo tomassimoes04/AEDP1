@@ -15,4 +15,6 @@ public interface Auction extends Serializable {
     boolean isEmpty();
     Iterator<Work> listWorks();
     Iterator<Bid> listBidsWork(String workId);
+
+    boolean hasWorksInAuction(String login);
 }

@@ -11,7 +11,7 @@ public interface App extends Serializable {
 
     void addArtist(String login, String name, String artisticName, int age, String email) throws AlredyExistingUser, InvalidAge;
 
-    void removeUser(String login) throws NonExistingUser;
+    void removeUser(String login) throws NonExistingUser, BidsInAuction, WorksInAuction;
 
     void addWork(String workId, String login, int year, String name) throws NonExistingUser, WrongUserType, ExistingWork;
 
