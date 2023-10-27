@@ -117,8 +117,14 @@ public class WorkClass implements Work {
     }
 
     @Override
-    public boolean hasBid() {
-        return !bids.isEmpty();
+    public boolean hasBid(String auctionId) {
+        for (int i = 0; i<bids.size(); i++){
+            Bid bid = bids.get(i);
+            if (bid.getAuctionId().equals(auctionId)){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -150,8 +156,16 @@ public class WorkClass implements Work {
     }
 
     @Override
-    public Iterator<Bid> listBids() {
-        return bids.iterator();
+    public Iterator<Bid> listBids(String auctionId) {
+        DoubleList<Bid> auctionBids = new DoubleList<>();
+        for (int i = 0; i<bids.size(); i++){
+            Bid bid = bids.get(i);
+            if (bid.getAuctionId().equals(auctionId)){
+                auctionBids.addLast(bid);
+            }
+        }
+
+        return auctionBids.iterator();
     }
 
     @Override

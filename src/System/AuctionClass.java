@@ -64,7 +64,7 @@ public class AuctionClass implements Auction {
         //System.out.println("close2");
         for (int i = 0; i < workcounter; i++) {
             Work work = works.get(i);
-            if (work.hasBid()) {
+            if (work.hasBid(auctionId)) {
                 work.sold();
                 work.setLastBuyValue(); //mexer com o auctionId
                 work.eraseBids(auctionId);
@@ -108,7 +108,7 @@ public class AuctionClass implements Auction {
     @Override
     public Iterator<Bid> listBidsWork(String workId) {
         Work work = getWork(workId);
-        return work.listBids();
+        return work.listBids(auctionId);
     }
 
     @Override

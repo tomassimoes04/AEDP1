@@ -37,12 +37,12 @@ public interface Work extends Serializable {
 
     void addBid(Bid bid);
 
-    boolean hasBid();
+    boolean hasBid(String auctionId);
 
     void setLastBuyValue();
 
     void eraseBids(String auctionId);
 
-    Iterator<Bid> listBids();
+    Iterator<Bid> listBids(String auctionId);
     void setLastBuyer(User winner,int value);
 }

@@ -160,17 +160,17 @@ public class AppClass implements App {
 
     @Override
     public void bid(String auctionId, String workId, String login, int value) throws NonExistingWork, NonExistingAuction, NonExistingUser, InsuficientBid {
-        Auction auction = getAuction(auctionId);
         User user = getUser(login);
+        if (user == null) {
+            throw new NonExistingUser("\nUtilizador inexistente.\n");
+        }
+        Auction auction = getAuction(auctionId);
         if (auction == null) {
             throw new NonExistingAuction("\nLeilao inexistente.\n");
         }
         Work work = auction.getWork(workId);
         if (work == null) {
             throw new NonExistingWork("\nObra inexistente no leilao.\n");
-        }
-        if (user == null) {
-            throw new NonExistingUser("\nUtilizador inexistente.\n");
         }
         if (work.getMinimumValue() > value) {
             throw new InsuficientBid("\nValor proposto abaixo do valor minimo.\n");
@@ -212,7 +212,7 @@ public class AppClass implements App {
             throw new NonExistingWork("\nObra inexistente no leilao.\n");
         }
         Work work = auction.getWork(workId);
-        if (!work.hasBid()) {
+        if (!work.hasBid(auctionId)) {
             throw new NoBids("\nObra sem propostas.\n");
         }
         return auction.listBidsWork(workId);
