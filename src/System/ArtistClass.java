@@ -16,17 +16,11 @@ public class ArtistClass extends UserClass implements Artist{
         return artisticname;
     }
 
-    @Override
+
     public Iterator<Work> getWorks() {
         return works.iterator();
     }
-
-    public int getNumofworks() {
-        return numofworks;
-    }
-
-    @Override
-    public void addWork(Work work) {
+    protected void addWork(Work work) {
         works.add(numofworks,work);
         numofworks++;
     }
@@ -34,14 +28,4 @@ public class ArtistClass extends UserClass implements Artist{
         return works.getFirst().getId();
     }
 
-    @Override
-    public boolean hasWork(String workId) {
-        for (int i = 0; i < numofworks; i++) {
-            Work work1 = works.get(i);
-            if (work1.getId().equals(workId)) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

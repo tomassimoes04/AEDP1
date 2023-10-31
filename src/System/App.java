@@ -25,9 +25,9 @@ public interface App extends Serializable {
 
     void bid(String auctionId, String workId, String login, int value) throws NonExistingWork, NonExistingAuction, NonExistingUser, InsuficientBid;
 
-    Iterator<Work> closeAuction(String auctionId) throws NonExistingAuction;
+    Iterator<WorkClass> closeAuction(String auctionId) throws NonExistingAuction;
 
-    Iterator<Work> listAuctionWorks(String auctionId) throws NonExistingAuction, NoWorks;
+    Iterator<WorkClass> listAuctionWorks(String auctionId) throws NonExistingAuction, NoWorks;
 
     Iterator<Bid> listBidsWork(String auctionId, String workId) throws NonExistingAuction, NonExistingWork, NoBids;
 }

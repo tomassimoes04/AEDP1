@@ -128,8 +128,8 @@ public class WorkClass implements Work {
     }
 
     @Override
-    public void setLastBuyValue() {
-        lastBuyValue=getHighestBid();
+    public void setLastBuyValue(String auctionId) {
+        lastBuyValue=getHighestBid(auctionId).getValue();
         if (lastBuyValue>highestBuyValue){
             highestBuyValue=lastBuyValue;
         }
@@ -173,14 +173,46 @@ public class WorkClass implements Work {
         lastBuyer=winner;
     }
 
-    private int getHighestBid(){ //mudar para ir buscar a bid do auction
-        int highest = bids.get(0).getValue();
-        for (int i=0; i<bids.size(); i++){
-            if (bids.get(i).getValue()>highest){
-                highest=bids.get(i).getValue();
+    public Bid getHighestBid(String auctionId) {
+        Queue<Bid> bidsAuction = auctionBids(auctionId);
+        Bid highest = new BidClass(null, 0, null, null);
+        if (!bidsAuction.isEmpty()) {
+            highest = bidsAuction.dequeue();
+        }
+        while(!bidsAuction.isEmpty()){
+            Bid bid = bidsAuction.dequeue();
+            if (bid.getValue() > highest.getValue()){
+                highest = bid;
             }
         }
         return highest;
     }
+
+    private Queue<Bid> auctionBids(String auctionId){
+        Queue<Bid> bidsAuction = new QueueInList<>();
+        for (int i = 0; i<bids.size(); i++){
+            Bid bid = bids.get(i);
+            if (bid.getAuctionId().equals(auctionId)){
+                bidsAuction.enqueue(bid);
+            }
+        }
+        return bidsAuction;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof WorkClass)) {
+            return false;
+        }
+
+        WorkClass w = (WorkClass) o;
+
+        return workId.equals(w.getId());
+    }
+
 
 }

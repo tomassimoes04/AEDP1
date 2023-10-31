@@ -55,6 +55,7 @@ public class Main {
         in.close();
     }
 
+    @SuppressWarnings("unchecked")
     private static App load() {
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream("sistema.txt"));
@@ -211,7 +212,7 @@ public class Main {
         String auctionId = in.next();
         in.nextLine();
         try {
-            Iterator<Work> it = app.closeAuction(auctionId);
+            Iterator<WorkClass> it = app.closeAuction(auctionId);
             System.out.println("\nLeilao encerrado.");
             while (it.hasNext()) {
                 Work work = it.next();
@@ -231,7 +232,7 @@ public class Main {
         String auctionId = in.next();
         in.nextLine();
         try {
-            Iterator<Work> it = app.listAuctionWorks(auctionId);
+            Iterator<WorkClass> it = app.listAuctionWorks(auctionId);
             System.out.println();
             while (it.hasNext()) {
                 Work work = it.next();

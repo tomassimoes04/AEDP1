@@ -20,6 +20,22 @@ public class UserClass implements User {
         bids = new DoubleList<>();
     }
 
+
+    @Override
+    public boolean equals(Object o){
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof UserClass)) {
+            return false;
+        }
+
+        UserClass u = (UserClass) o;
+
+        return login.equals(u.getLogin());
+    }
+
     @Override
     public String getLogin() {
         return login;
@@ -40,10 +56,8 @@ public class UserClass implements User {
         return email;
     }
 
-    @Override
-    public void addBid(Bid bid) {
+    protected void addBid(Bid bid) {
         bids.addLast(bid);
-        //System.out.println(bids.size());
     }
 
     @Override
@@ -51,8 +65,8 @@ public class UserClass implements User {
         return !bids.isEmpty();
     }
 
-    @Override
-    public void eraseBids(String auctionId) {
+
+    protected void eraseBids(String auctionId) {
         int i = 0;
         //System.out.println("pre ciclo -user");
         //System.out.println(getName());

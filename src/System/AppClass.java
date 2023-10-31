@@ -5,20 +5,16 @@ import dataStructures.*;
 import Exceptions.*;
 
 public class AppClass implements App {
-    DoubleList<User> users = new DoubleList<>();
-
-    DoubleList<Work> works = new DoubleList<>();
-    DoubleList<Auction> auctions = new DoubleList<>();
-    int usercount = 0;
-    int workscount = 0;
-    int auctioncount = 0;
+    SearchableList<UserClass> users = new SearchableList<>();
+    SearchableList<WorkClass> works = new SearchableList<>();
+    SearchableList<AuctionClass> auctions = new SearchableList<>();
 
     @Override
     public void addUser(String login, String name, int age, String email) throws AlredyExistingUser, InvalidAge {
         if (age < 18) {
             throw new InvalidAge("\nIdade inferior a 18 anos.\n");
         }
-        User user = getUser(login);
+        UserClass user = getUser(login);
         if (user != null) {
             throw new AlredyExistingUser("\nUtilizador existente.\n");
         }
@@ -30,7 +26,7 @@ public class AppClass implements App {
         if (age < 18) {
             throw new InvalidAge("\nIdade inferior a 18 anos.\n");
         }
-        User user = getUser(login);
+        UserClass user = getUser(login);
         if (user != null) {
             throw new AlredyExistingUser("\nUtilizador existente.\n");
         }
@@ -39,7 +35,7 @@ public class AppClass implements App {
 
     @Override
     public void removeUser(String login) throws NonExistingUser, BidsInAuction, WorksInAuction{
-        User user = getUser(login);
+        UserClass user = getUser(login);
         if (user== null) {
             throw new NonExistingUser("\nUtilizador inexistente.\n");
         }
@@ -66,9 +62,9 @@ public class AppClass implements App {
     }
 
     private void removeWorksArtist(String login){
-        Queue<Work> worksToRemove = new QueueInList<>();
+        Queue<WorkClass> worksToRemove = new QueueInList<>();
         for (int i = 0; i<works.size(); i++){
-            Work work = works.get(i);
+            WorkClass work = works.get(i);
             if (work.getArtistLogin().equals(login)){
                 worksToRemove.enqueue(work);
             }
@@ -84,59 +80,63 @@ public class AppClass implements App {
             throw new ExistingWork("\nObra existente.\n");
         }
 
-        User user = getUser(login);
+        UserClass user = getUser(login);
         if (user == null) {
             throw new NonExistingUser("\nUtilizador inexistente.\n");
         }
         if (!(user instanceof ArtistClass)) {
             throw new WrongUserType("\nArtista inexistente.\n");
         }
-        Artist artist = (Artist) user;
+        ArtistClass artist = (ArtistClass) user;
 
-        Work work = new WorkClass(workId, artist, year, name);
+        WorkClass work = new WorkClass(workId, artist, year, name);
         artist.addWork(work);
 
         works.addLast(work);
     }
 
     @Override
-    public User getUser(String login) {
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
+    public UserClass getUser(String login) {
+        UserClass user = new UserClass(0, null, login, null);
+        return users.searchElement(user);
+        /**for (int i = 0; i < users.size(); i++) {
+            UserClass user = users.get(i);
             if (user.getLogin().equals(login)) {
                 return user;
             }
         }
-        return null;
+        return null;*/
     }
 
 
     @Override
-    public Work getWork(String workId) {
-
-        for (int i = 0; i < works.size(); i++) {
-            Work work1 = works.get(i);
-            if (work1.getId().equals(workId)) {
-                return work1;
+    public WorkClass getWork(String workId) {
+        WorkClass work = new WorkClass(workId, null, 0, null);
+        return works.searchElement(work);
+        /**for (int i = 0; i < works.size(); i++) {
+            WorkClass work = works.get(i);
+            if (work.getId().equals(workId)) {
+                return work;
             }
         }
-        return null;
+        return null;*/
     }
 
-    public Auction getAuction(String auctionId) {
-
-        for (int i = 0; i < auctions.size(); i++) {
-            Auction auction = auctions.get(i);
+    public AuctionClass getAuction(String auctionId) {
+        AuctionClass auction = new AuctionClass(auctionId);
+        return auctions.searchElement(auction);
+        /**for (int i = 0; i < auctions.size(); i++) {
+            AuctionClass auction = auctions.get(i);
             if (auction.getId().equals(auctionId)) {
                 return auction;
             }
         }
-        return null;
+        return null;*/
     }
 
     @Override
     public void createAuction(String auctionId) throws AlreadyExistingAuction {
-        Auction auction = getAuction(auctionId);
+        AuctionClass auction = getAuction(auctionId);
         if (auction != null) {
             throw new AlreadyExistingAuction("\nLeilao existente.\n");
         }
@@ -145,8 +145,8 @@ public class AppClass implements App {
 
     @Override
     public void addWorkAuction(String auctionId, String workId, int minValue) throws NonExistingWork, NonExistingAuction {
-        Auction auction = getAuction(auctionId);
-        Work work = getWork(workId);
+        AuctionClass auction = getAuction(auctionId);
+        WorkClass work = getWork(workId);
         if (auction == null) {
             throw new NonExistingAuction("\nLeilao inexistente.\n");
         }
@@ -160,15 +160,15 @@ public class AppClass implements App {
 
     @Override
     public void bid(String auctionId, String workId, String login, int value) throws NonExistingWork, NonExistingAuction, NonExistingUser, InsuficientBid {
-        User user = getUser(login);
+        UserClass user = getUser(login);
         if (user == null) {
             throw new NonExistingUser("\nUtilizador inexistente.\n");
         }
-        Auction auction = getAuction(auctionId);
+        AuctionClass auction = getAuction(auctionId);
         if (auction == null) {
             throw new NonExistingAuction("\nLeilao inexistente.\n");
         }
-        Work work = auction.getWork(workId);
+        WorkClass work = auction.getWork(workId);
         if (work == null) {
             throw new NonExistingWork("\nObra inexistente no leilao.\n");
         }
@@ -179,19 +179,19 @@ public class AppClass implements App {
     }
 
     @Override
-    public Iterator<Work> closeAuction(String auctionId) throws NonExistingAuction {
-        Auction auction = getAuction(auctionId);
+    public Iterator<WorkClass> closeAuction(String auctionId) throws NonExistingAuction {
+        AuctionClass auction = getAuction(auctionId);
         if (auction == null) {
             throw new NonExistingAuction("\nLeilao inexistente.\n");
         }
-        Iterator<Work> iterator = auction.closeAuction();
+        Iterator<WorkClass> iterator = auction.closeAuction();
         auctions.remove(auction);
 
         return iterator;
     }
 
     @Override
-    public Iterator<Work> listAuctionWorks(String auctionId) throws NonExistingAuction, NoWorks {
+    public Iterator<WorkClass> listAuctionWorks(String auctionId) throws NonExistingAuction, NoWorks {
         Auction auction = getAuction(auctionId);
         if (auction == null) {
             throw new NonExistingAuction("\nLeilao inexistente.\n");
