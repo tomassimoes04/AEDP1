@@ -27,6 +27,20 @@ public class Main {
 
     }
 
+    /**
+     * Process user commands and interact with the application.
+     * @param app - The application instance to operate on.
+     * @throws NonExistingUser - Thrown when a user does not exist.
+     * @throws WrongUserType - Thrown when the user type is incorrect.
+     * @throws ExistingWork - Thrown when a work already exists.
+     * @throws AlredyExistingUser - Thrown when a user or artist already exists.
+     * @throws NonExistingWork - Thrown when a work does not exist.
+     * @throws InvalidAge - Thrown when the provided age is invalid.
+     * @throws InsuficientBid - Thrown when the bid value is insufficient.
+     * @throws NonExistingAuction - Thrown when an auction does not exist.
+     * @throws AlreadyExistingAuction - Thrown when an auction already exists.
+     */
+
     private static void commands(App app) throws NonExistingUser, WrongUserType, ExistingWork, AlredyExistingUser, NonExistingWork, InvalidAge, InsuficientBid, NonExistingAuction, AlreadyExistingAuction {
         Scanner in = new Scanner(java.lang.System.in);
         String command;
@@ -80,6 +94,12 @@ public class Main {
             System.out.println("problema a escrever");
         }
     }
+    /**
+     * Process the "ADDUSER" command to add a new user to the application.
+     *
+     * @param app - The application instance to operate on.
+     * @param in - The Scanner for reading user input.
+     */
 
     private static void commandAddUser(App app, Scanner in) {
         String login = in.next();
@@ -94,6 +114,12 @@ public class Main {
             System.out.println(exception.getMessage());
         }
     }
+    /**
+     * Process the "ADDARTIST" command to add a new artist to the application.
+     *
+     * @param app - The application instance to operate on.
+     * @param in - The Scanner for reading user input.
+     */
 
     private static void commandAddArtist(App app, Scanner in) {
         String login = in.next();
@@ -109,6 +135,12 @@ public class Main {
             System.out.println(exception.getMessage());
         }
     }
+    /**
+     * Process the "REMOVEUSER" command to remove a user from the application.
+     *
+     * @param app - The application instance to operate on.
+     * @param in - The Scanner for reading user input.
+     */
 
     private static void commandRemoveUser(App app, Scanner in) {
         String login = in.next();
@@ -120,7 +152,12 @@ public class Main {
             System.out.println(exception.getMessage());
         }
     }
-
+    /**
+     * Process the "ADDWORK" command to add a new work to the application.
+     *
+     * @param app - The application instance to operate on.
+     * @param in - The Scanner for reading user input.
+     */
     private static void commandAddWork(App app, Scanner in) {
         String workId = in.next();
         String login = in.next();
@@ -133,7 +170,12 @@ public class Main {
             System.out.println(exception.getMessage());
         }
     }
-
+    /**
+     * Process the "INFOUSER" command to retrieve information about a user and display it.
+     *
+     * @param app - The application instance to operate on.
+     * @param in - The Scanner for reading user input.
+     */
     private static void commandInfoUser(App app, Scanner in) {
         String login = in.next();
         in.nextLine();
@@ -144,6 +186,12 @@ public class Main {
             System.out.println("\nUtilizador inexistente.\n");
         }
     }
+    /**
+     * Process the "INFOARTIST" command to retrieve information about a artist and display it.
+     *
+     * @param app - The application instance to operate on.
+     * @param in - The Scanner for reading user input.
+     */
 
     private static void commandInfoArtist(App app, Scanner in) {
         String login = in.next();
@@ -157,8 +205,14 @@ public class Main {
             System.out.println("\n" + artist.getLogin() + " " + artist.getName() + " " + artist.getArtisticName() + " " + artist.getAge() + " " + artist.getEmail() + "\n");
         }
     }
+    /**
+     * Process the "INFOWORK" command to retrieve information about a artist and display it.
+     *
+     * @param app - The application instance to operate on.
+     * @param in - The Scanner for reading user input.
+     */
 
-    private static void commandInfoWork(App app, Scanner in) throws NonExistingWork {
+    private static void commandInfoWork(App app, Scanner in)  {
         String workId = in.next();
         in.nextLine();
         Work work = app.getWork(workId);
@@ -168,8 +222,14 @@ public class Main {
             System.out.println("\n" + work.getId() + " " + work.getName() + " " + work.getYear() + " " + work.getLastBuyValue() + " " + work.getArtistLogin() + " " + work.getArtistName() + "\n");
         }
     }
+    /**
+     * Process the "CREATEAUCTION" command to create a new auction.
+     *
+     * @param app - The application instance to operate on.
+     * @param in - The Scanner for reading user input.
+     */
 
-    private static void commandCreateAuction(App app, Scanner in) throws AlreadyExistingAuction {
+    private static void commandCreateAuction(App app, Scanner in)  {
         String auctionId = in.next();
         in.nextLine();
         try {
@@ -179,8 +239,14 @@ public class Main {
             System.out.println(exception.getMessage());
         }
     }
+    /**
+     * Process the "ADDWORK" command to add a work to a auction.
+     *
+     * @param app - The application instance to operate on.
+     * @param in - The Scanner for reading user input.
+     */
 
-    private static void commandAddWorkAuction(App app, Scanner in) throws NonExistingAuction, NonExistingWork {
+    private static void commandAddWorkAuction(App app, Scanner in)  {
         String auctionId = in.next();
         String workId = in.next();
         int minValue = in.nextInt();
@@ -192,8 +258,14 @@ public class Main {
             System.out.println(exception.getMessage());
         }
     }
+    /**
+     * Process the "ADDBID" command to add a bid to an auction.
+     *
+     * @param app - The application instance to operate on.
+     * @param in - The Scanner for reading user input.
+     */
 
-    private static void commandBid(App app, Scanner in) throws NonExistingUser, InsuficientBid, NonExistingAuction, NonExistingWork {
+    private static void commandBid(App app, Scanner in)  {
         String auctionId = in.next();
         String workId = in.next();
         String login = in.next();
@@ -207,8 +279,14 @@ public class Main {
         }
 
     }
+    /**
+     * Process the "CLOSEAUCTION" command to close an auction and display the winners if they exist.
+     *
+     * @param app - The application instance to operate on.
+     * @param in - The Scanner for reading user input.
+     */
 
-    private static void commandCloseAuction(App app, Scanner in) throws NonExistingAuction {
+    private static void commandCloseAuction(App app, Scanner in)  {
         String auctionId = in.next();
         in.nextLine();
         try {
@@ -227,6 +305,12 @@ public class Main {
             System.out.println(exception.getMessage());
         }
     }
+    /**
+     * Process the "LISTACUTIONWORKS" command to display the current works in an auction.
+     *
+     * @param app - The application instance to operate on.
+     * @param in - The Scanner for reading user input.
+     */
 
     private static void commandListAuctionWorks(App app, Scanner in) {
         String auctionId = in.next();
@@ -243,6 +327,12 @@ public class Main {
             System.out.println(exception.getMessage());
         }
     }
+    /**
+     * Process the "LISTBIDS" command to lists the bids made to a work in an auction.
+     *
+     * @param app - The application instance to operate on.
+     * @param in - The Scanner for reading user input.
+     */
 
     private static void commandListBidsWork(App app, Scanner in) {
         String auctionId = in.next();
@@ -260,5 +350,4 @@ public class Main {
             System.out.println(exception.getMessage());
         }
     }
-
 }

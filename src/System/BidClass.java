@@ -5,7 +5,7 @@ public class BidClass implements Bid{
 
     private User buyer;
     private int value;
-    private Work work;
+     Work work;
     private String auctionId;
 
     public BidClass (User buyer, int value, String auctionId,Work work){
@@ -40,9 +40,6 @@ public class BidClass implements Bid{
         return buyer;
     }
 
-    @Override
-    public Work getWork() {
-        return work;
-    }
+
 
 }
