@@ -4,10 +4,10 @@ package System;
 import dataStructures.*;
 
 public class AuctionClass implements Auction {
-    //voltar gwfbinkwkidwdn
+
     String auctionId;
     DoubleList<Bid> bids = new DoubleList<>();
-    DoubleList<Bid> winningbids = new DoubleList<>();
+
     DoubleList<WorkClass> works = new DoubleList<>();
     int workcounter = 0;
     int bidcounter = 0;
@@ -33,8 +33,14 @@ public class AuctionClass implements Auction {
         return auctionId.equals(a.getId());
     }
 
-    @Override
-    public void doBid(UserClass buyer, Work work, int value) {
+    /**
+     * Perform a bid in the auction.
+     *
+     * @param buyer - The user making the bid.
+     * @param work - The work for which the bid is placed.
+     * @param value - The bid value.
+     */
+    protected void doBid(UserClass buyer, Work work, int value) {
         if (bidders.find(buyer) == -1) {
             bidders.addLast(buyer);
         }
@@ -45,6 +51,10 @@ public class AuctionClass implements Auction {
         bids.addLast(bid);
     }
 
+    /**
+     * Method to set the winners of the auction
+     */
+
     private void setWinners() {
         for (int i = 0; i< works.size(); i++){
             Work work = works.get(i);
@@ -53,15 +63,17 @@ public class AuctionClass implements Auction {
         }
     }
 
+    /**
+     * Method to close the auction
+     * @return work-iterator
+     */
 
-    @Override
-    public Iterator<WorkClass> closeAuction() {
+    protected Iterator<WorkClass> closeAuction() {
         setWinners();
         for (int i = 0; i < bidders.size(); i++) {
             UserClass bidder = bidders.get(i);
             bidder.eraseBids(auctionId);
         }
-        //System.out.println("close2");
         for (int i = 0; i < workcounter; i++) {
             WorkClass work = works.get(i);
             if (work.hasBid(auctionId)) {
@@ -73,8 +85,11 @@ public class AuctionClass implements Auction {
         return works.iterator();
     }
 
-    @Override
-    public void addWork(WorkClass work) {
+    /**
+     * Method to add a work to the auction
+     * @param work -The ID a new work that will be added to the auction.
+     */
+    protected void addWork(WorkClass work) {
 
         works.addLast(work);
         workcounter++;
@@ -85,7 +100,12 @@ public class AuctionClass implements Auction {
         return getWork(workId) != null;
     }
 
-    public WorkClass getWork(String workId) {
+    /**
+     * Method to return a work
+     * @param workId - The ID of the desired work.
+     * @return work
+     */
+    protected WorkClass getWork(String workId) {
         for (int i = 0; i < workcounter; i++) {
             WorkClass work1 = works.get(i);
             if (work1.getId().equals(workId)) {

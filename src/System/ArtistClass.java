@@ -3,9 +3,9 @@ package System;
 
 import dataStructures.*;
 public class ArtistClass extends UserClass implements Artist{
-    String artisticname;
-    DoubleList<Work> works= new DoubleList<>();
-    int numofworks=0;
+    private String artisticname;
+    private DoubleList<Work> works= new DoubleList<>();
+    private int numofworks=0;
     public ArtistClass(int age, String name, String login, String email,String artisticname) {
         super(age, name, login, email);
         this.artisticname=artisticname;
@@ -17,15 +17,10 @@ public class ArtistClass extends UserClass implements Artist{
     }
 
 
-    public Iterator<Work> getWorks() {
-        return works.iterator();
-    }
     protected void addWork(Work work) {
         works.add(numofworks,work);
         numofworks++;
     }
-    public String getFirstWork(String id){
-        return works.getFirst().getId();
-    }
+
 
 }

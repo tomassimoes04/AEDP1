@@ -99,13 +99,7 @@ public class AppClass implements App {
     public UserClass getUser(String login) {
         UserClass user = new UserClass(0, null, login, null);
         return users.searchElement(user);
-        /**for (int i = 0; i < users.size(); i++) {
-            UserClass user = users.get(i);
-            if (user.getLogin().equals(login)) {
-                return user;
-            }
-        }
-        return null;*/
+
     }
 
 
@@ -113,25 +107,12 @@ public class AppClass implements App {
     public WorkClass getWork(String workId) {
         WorkClass work = new WorkClass(workId, null, 0, null);
         return works.searchElement(work);
-        /**for (int i = 0; i < works.size(); i++) {
-            WorkClass work = works.get(i);
-            if (work.getId().equals(workId)) {
-                return work;
-            }
-        }
-        return null;*/
+
     }
 
     public AuctionClass getAuction(String auctionId) {
         AuctionClass auction = new AuctionClass(auctionId);
         return auctions.searchElement(auction);
-        /**for (int i = 0; i < auctions.size(); i++) {
-            AuctionClass auction = auctions.get(i);
-            if (auction.getId().equals(auctionId)) {
-                return auction;
-            }
-        }
-        return null;*/
     }
 
     @Override
@@ -204,14 +185,14 @@ public class AppClass implements App {
 
     @Override
     public Iterator<Bid> listBidsWork(String auctionId, String workId) throws NonExistingAuction, NonExistingWork, NoBids {
-        Auction auction = getAuction(auctionId);
+        AuctionClass auction = getAuction(auctionId);
         if (auction == null) {
             throw new NonExistingAuction("\nLeilao inexistente.\n");
         }
         if (!auction.hasWork(workId)) {
             throw new NonExistingWork("\nObra inexistente no leilao.\n");
         }
-        Work work = auction.getWork(workId);
+        WorkClass work = auction.getWork(workId);
         if (!work.hasBid(auctionId)) {
             throw new NoBids("\nObra sem propostas.\n");
         }
