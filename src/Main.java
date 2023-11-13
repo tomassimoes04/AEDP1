@@ -23,6 +23,8 @@ public class Main {
     private static final String LISTAUCTIONWORKS = "LISTAUCTIONWORKS";
     private static final String LISTBIDSWORK = "LISTBIDSWORK";
     private static final String QUIT = "QUIT";
+    private static final String LISTARTISTWORKS = "LISTARTISTWORKS";
+    private static final String LISTWORKSBYVALUE = "LISTWORKSBYVALUE";
 
     public static void main(String[] args) throws NonExistingUser, AlredyExistingUser, NonExistingWork, WrongUserType, ExistingWork, InvalidAge, InsuficientBid, AlreadyExistingAuction, NonExistingAuction {
         App app = load();
@@ -67,6 +69,7 @@ public class Main {
 
                 default -> java.lang.System.out.println("Unknown command. Type help to see available commands.");
             }
+            
         } while (!command.equals(QUIT));
         save(app);
         in.close();
