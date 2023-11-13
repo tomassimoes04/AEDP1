@@ -1,24 +1,30 @@
 package System;
+/**
+ ˚ @author Tomás Martinho Simões (66152) tma.simoes@campus.fct.unl.pt
+ ˚ @author Lourenço Calhau (65524) l.calhau@campus.fct.unl.pt
+ */
 
 
 import dataStructures.*;
 
 public class WorkClass implements Work {
-    String workId;
-    Artist artist;
-    int year;
-    String name;
-    int minValue;
+    static final long serialVersionUID = 5L;
 
-    int lastBuyValue;
+    private final String workId;
+    private Artist artist;
+    private int year;
+    private final String name;
+    private int minValue;
 
-    int highestBuyValue;
+    private int lastBuyValue;
 
-    User lastBuyer;
+    private int highestBuyValue;
 
-    boolean wasSold;
+    private User lastBuyer;
 
-    DoubleList<Bid> bids;
+    private boolean wasSold;
+
+    private DoubleList<Bid> bids;
 
     public WorkClass(String workId, Artist artist, int year, String name) {
         this.workId = workId;
@@ -138,9 +144,6 @@ public class WorkClass implements Work {
     @Override
     public void eraseBids(String auctionId) {
         int i = 0;
-        //System.out.println("pre ciclo -work");
-        //System.out.println(getName());
-        //System.out.println(bids.size());
         while (bids.get(i)!=null){
             if (bids.get(i).getAuctionId().equals(auctionId)){
                 bids.remove(i);
@@ -148,7 +151,6 @@ public class WorkClass implements Work {
             else{
                 i++;
             }
-            //System.out.println(bids.size()+" dentro ciclo "+ i);
             if (i==bids.size()){
                 return;
             }
@@ -175,7 +177,7 @@ public class WorkClass implements Work {
 
     public Bid getHighestBid(String auctionId) {
         Queue<Bid> bidsAuction = auctionBids(auctionId);
-        Bid highest = new BidClass(null, 0, null, null);
+        Bid highest = new BidClass(null, 0, null);
         if (!bidsAuction.isEmpty()) {
             highest = bidsAuction.dequeue();
         }
@@ -188,6 +190,11 @@ public class WorkClass implements Work {
         return highest;
     }
 
+    /**
+     * Returns the bids of a work from an auction
+     * @param auctionId - The auction's ID
+     * @return
+     */
     private Queue<Bid> auctionBids(String auctionId){
         Queue<Bid> bidsAuction = new QueueInList<>();
         for (int i = 0; i<bids.size(); i++){

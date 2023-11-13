@@ -1,13 +1,19 @@
 package System;
+/**
+ ˚ @author Tomás Martinho Simões (66152) tma.simoes@campus.fct.unl.pt
+ ˚ @author Lourenço Calhau (65524) l.calhau@campus.fct.unl.pt
+ */
 
 
 import dataStructures.*;
 
 public class UserClass implements User {
-    private int age;
-    private String name;
-    private String login;
-    private String email;
+    static final long serialVersionUID = 4L;
+
+    private final int age;
+    private final String name;
+    private final String login;
+    private final String email;
     private DoubleList<Bid> bids;
 
 
@@ -65,12 +71,13 @@ public class UserClass implements User {
         return !bids.isEmpty();
     }
 
-
+    /**
+     * Erase the bids made from a user.
+     * @param auctionId - The auction's ID
+     */
     protected void eraseBids(String auctionId) {
         int i = 0;
-        //System.out.println("pre ciclo -user");
-        //System.out.println(getName());
-        //System.out.println(bids.size());
+
 
         while (i < bids.size()) {
             if (bids.get(i).getAuctionId().equals(auctionId)) {
@@ -78,7 +85,7 @@ public class UserClass implements User {
             } else {
                 i++;
             }
-            //System.out.println(bids.size()+" dentro ciclo "+ i);
+
         }
     }
 

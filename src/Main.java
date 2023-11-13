@@ -4,7 +4,10 @@ import System.*;
 
 import java.io.*;
 import java.util.Scanner;
-
+/**
+        ˚ @author Tomás Martinho Simões (66152) tma.simoes@campus.fct.unl.pt
+        ˚ @author Lourenço Calhau (65524) l.calhau@campus.fct.unl.pt
+        */
 public class Main {
     private static final String ADDUSER = "ADDUSER";
     private static final String ADDARTIST = "ADDARTIST";

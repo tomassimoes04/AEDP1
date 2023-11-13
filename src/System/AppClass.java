@@ -3,11 +3,21 @@ package System;
 
 import dataStructures.*;
 import Exceptions.*;
-
+/**
+ ˚ @author Tomás Martinho Simões (66152) tma.simoes@campus.fct.unl.pt
+ ˚ @author Lourenço Calhau (65524) l.calhau@campus.fct.unl.pt
+ */
 public class AppClass implements App {
-    SearchableList<UserClass> users = new SearchableList<>();
-    SearchableList<WorkClass> works = new SearchableList<>();
-    SearchableList<AuctionClass> auctions = new SearchableList<>();
+    SearchableList<UserClass> users ;
+    SearchableList<WorkClass> works ;
+    SearchableList<AuctionClass> auctions ;
+    static final long serialVersionUID = 0L;
+    public AppClass(){
+        users = new SearchableDoubleList<>();
+        works = new SearchableDoubleList<>();
+        auctions = new SearchableDoubleList<>();
+    }
+
 
     @Override
     public void addUser(String login, String name, int age, String email) throws AlredyExistingUser, InvalidAge {
@@ -51,6 +61,11 @@ public class AppClass implements App {
         users.remove(user);
     }
 
+    /**
+     * Returns if a artist as any work in an auction
+     * @param login - The artist's login.
+     * @return true or false
+     */
     private boolean hasActiveWorks(String login){
         for (int i = 0; i<auctions.size(); i++){
             Auction auction = auctions.get(i);
@@ -60,6 +75,11 @@ public class AppClass implements App {
         }
         return false;
     }
+
+    /**
+     * Remove the works from an artist whhich was removed
+     * @param login - The artist's login.
+     */
 
     private void removeWorksArtist(String login){
         Queue<WorkClass> worksToRemove = new QueueInList<>();

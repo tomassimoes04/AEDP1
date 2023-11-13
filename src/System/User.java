@@ -1,6 +1,10 @@
 package System;
+/**
+ ˚ @author Tomás Martinho Simões (66152) tma.simoes@campus.fct.unl.pt
+ ˚ @author Lourenço Calhau (65524) l.calhau@campus.fct.unl.pt
+ */
 
-//interface userModify
+
 import dataStructures.*;
 
 import java.io.Serializable;

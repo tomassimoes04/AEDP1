@@ -1,20 +1,10 @@
 package dataStructures;
 
-public class SearchableList<E> extends DoubleList<E>{
-
-    public SearchableList() {
-        super();
-    }
-
-    public E searchElement(E element){
-        DoubleListNode<E> node = head;
-        while ( node != null)
-        {
-            if (node.getElement().equals(element)){
-                return node.getElement();
-            }
-            node = node.getNext();
-        }
-        return null;
-    }
+public interface SearchableList<E> extends List<E>{
+    /**
+     * Method to search the elements in the list.
+     * @param element - Desired element
+     * @return  element if possible.
+     */
+    E searchElement(E element);
 }

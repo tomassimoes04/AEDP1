@@ -2,20 +2,29 @@ package System;
 
 
 import dataStructures.*;
+/**
+ ˚ @author Tomás Martinho Simões (66152) tma.simoes@campus.fct.unl.pt
+ ˚ @author Lourenço Calhau (65524) l.calhau@campus.fct.unl.pt
+ */
 
 public class AuctionClass implements Auction {
+    static final long serialVersionUID = 2L;
 
-    String auctionId;
-    DoubleList<Bid> bids = new DoubleList<>();
 
-    DoubleList<WorkClass> works = new DoubleList<>();
-    int workcounter = 0;
-    int bidcounter = 0;
-    DoubleList<UserClass> bidders = new DoubleList<>();
+    private final String auctionId;
+    private DoubleList<Bid> bids ;
+
+    private DoubleList<WorkClass> works ;
+
+    private DoubleList<UserClass> bidders ;
 
 
     public AuctionClass(String auctionId) {
+
         this.auctionId = auctionId;
+        bidders = new DoubleList<>();
+        works = new DoubleList<>();
+        bids = new DoubleList<>();
     }
 
     @Override
@@ -44,10 +53,10 @@ public class AuctionClass implements Auction {
         if (bidders.find(buyer) == -1) {
             bidders.addLast(buyer);
         }
-        Bid bid = new BidClass(buyer, value, auctionId, work);
+        Bid bid = new BidClass(buyer, value, auctionId);
         work.addBid(bid);
         buyer.addBid(bid);
-        bidcounter++;
+
         bids.addLast(bid);
     }
 
@@ -74,7 +83,7 @@ public class AuctionClass implements Auction {
             UserClass bidder = bidders.get(i);
             bidder.eraseBids(auctionId);
         }
-        for (int i = 0; i < workcounter; i++) {
+        for (int i = 0; i < works.size(); i++) {
             WorkClass work = works.get(i);
             if (work.hasBid(auctionId)) {
                 work.sold();
@@ -92,7 +101,7 @@ public class AuctionClass implements Auction {
     protected void addWork(WorkClass work) {
 
         works.addLast(work);
-        workcounter++;
+
     }
 
     @Override
@@ -106,7 +115,7 @@ public class AuctionClass implements Auction {
      * @return work
      */
     protected WorkClass getWork(String workId) {
-        for (int i = 0; i < workcounter; i++) {
+        for (int i = 0; i < works.size(); i++) {
             WorkClass work1 = works.get(i);
             if (work1.getId().equals(workId)) {
                 return work1;

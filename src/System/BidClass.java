@@ -1,18 +1,22 @@
 package System;
+/**
+ ˚ @author Tomás Martinho Simões (66152) tma.simoes@campus.fct.unl.pt
+ ˚ @author Lourenço Calhau (65524) l.calhau@campus.fct.unl.pt
+ */
 
 
 public class BidClass implements Bid{
+    static final long serialVersionUID = 3L;
 
-    private User buyer;
-    private int value;
-     Work work;
-    private String auctionId;
 
-    public BidClass (User buyer, int value, String auctionId,Work work){
+    private final User buyer;
+    private final int value;
+    private final String auctionId;
+
+    public BidClass (User buyer, int value, String auctionId){
         this.buyer=buyer;
         this.value=value;
         this.auctionId=auctionId;
-        this.work=work;
 
     }
     @Override
